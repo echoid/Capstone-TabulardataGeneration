@@ -12,8 +12,14 @@ Selnet: https://github.com/ppo2020/SIGMOD2021ID73 (tf:1.x)
 Adult: https://github.com/ruclty/Daisy/blob/master/dataset/adult_train.csv
 
 
+### To run this model (Adult example) 
 
-To run this model (Adult example) 
-1. python pretrained_fd.py generated fd pretrained models.
-2. python selectivity_generation.py dataset/train/adult_train.csv
-3. python pretrained_sel pretrained the selectivity model
+** generated pre-trained functional dependiencies models. 
+python pretrained_fd.py 
+
+** preprocess data, generate high dim representation
+python selectivity_generation.py
+
+** pretrained selectivity model
+python pretrained_sel.py 
+

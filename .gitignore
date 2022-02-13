@@ -148,7 +148,6 @@ cython_debug/
 dataset/generated
 pretrained_models
 __pycache__
-dataset/train
 # PyCharm
 #  JetBrains specific template is maintained in a separate JetBrains.gitignore that can
 #  be found at https://github.com/github/gitignore/blob/main/Global/JetBrains.gitignore

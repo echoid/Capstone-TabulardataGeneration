@@ -4,9 +4,10 @@ from tensorflow.keras import layers
 from tensorflow.keras.models import Model
 import pandas as pd
 import numpy as np
+import json
 
 
-
+acc_dic = {}
 fd_data = pd.read_csv("dataset/train/adult.csv")
 Input = fd_data[["education-num","capital-gain"]]
 Output = fd_data["hours-per-week"]
@@ -31,12 +32,16 @@ FD_Strong_num = Strong_num()
 
 FD_Strong_num.fit(Input, Output,epochs=100,batch_size=256)
 
+result = FD_Strong_num.evaluate(Input, Output)
+acc_dic["strong_num"] = result
 FD_Strong_num.save('pretrained_models/strong_num')
 print("Strong-num pretrained model saved")
 # if want load model
 # FD_Strong_num = tf.keras.models.load_model('pretrained_models/strong_num')
 
 # result = FD_Strong_num.predict(Input)
+
+
 
 
 print("【Functional Dependiencies 2: Weak Numerical】")
@@ -62,11 +67,14 @@ def Weak_num():
 
 FD_Weak_num = Weak_num()
 FD_Weak_num.fit(Input, Output,epochs=100,batch_size=256)
+result = FD_Weak_num.evaluate(Input, Output)
+acc_dic["weak_num"] = result
+print(type(result))
 FD_Weak_num.save('pretrained_models/weak_num')
 
 
 
-print("【Functional Dependiencies 3: Strong Categorical")
+print("【Functional Dependiencies 3: Strong Categorical】")
 print("【marital-status + sex -> relationship】")
 
 ms = np.array(pd.get_dummies(fd_data["marital-status"])) 
@@ -95,13 +103,17 @@ FD_Strong_cate = Strong_cate()
 FD_Strong_cate.fit(
   Input, Output_dummy,epochs=100,batch_size=256)
 
+loss, acc = FD_Strong_cate.evaluate(Input, Output_dummy)
+print(type(acc))
+print(acc)
+acc_dic["strong_cate"] = np.float64(acc)
 FD_Strong_cate.save('pretrained_models/strong_cate')
 
 
 
 
-print("【Functional Dependiencies 4: Weak Categorical")
-print("【education -> occupation")
+print("【Functional Dependiencies 4: Weak Categorical】")
+print("【education -> occupation】")
 
 
 Input = np.array(pd.get_dummies(fd_data["education"])) 
@@ -126,7 +138,15 @@ FD_Weak_cate = Weak_cate()
 FD_Weak_cate.fit(
   Input, Output_dummy,epochs=100,batch_size=256)
 
+loss, acc = FD_Weak_cate.evaluate(Input, Output_dummy)
+acc_dic["weak_cate"] =  np.float64(acc)
+
 FD_Weak_cate.save('pretrained_models/weak_cate')
 
 
 print("All Pretrained FD models Saved!")
+
+
+ 
+with open("pretrained_models/base_acc.json", "w") as outfile:
+    json.dump(acc_dic, outfile)

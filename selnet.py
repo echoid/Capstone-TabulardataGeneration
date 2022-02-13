@@ -300,32 +300,39 @@ class SelNet(object):
     def predict_vae_dnn(self, test_X, test_tau):
         ''' Prediction
         '''
+        tf.compat.v1.disable_eager_execution()
+        tf.reset_default_graph()
         x_input = tf.compat.v1.placeholder(dtype=tf.float32, shape=[None, self.original_x_dim], name=self.regressor_name + 'original_X')
 
 
         tau_input = tf.compat.v1.placeholder(dtype=tf.float32, shape=[None, self.tau_part_num], name=self.regressor_name + 'tau')
-        self.bn_phase = tf.placeholder(dtype=tf.bool, name=self.regressor_name + 'Phase')
-        self.keep_prob = tf.placeholder(dtype=tf.float32, name=self.regressor_name + 'Dropout')
+        self.bn_phase = tf.compat.v1.placeholder(dtype=tf.bool, name=self.regressor_name + 'Phase')
+        self.keep_prob = tf.compat.v1.placeholder(dtype=tf.float32, name=self.regressor_name + 'Dropout')
         # input number
-        self.input_num = tf.placeholder(dtype=tf.int32, name=self.regressor_name + 'input_num')
+        self.input_num = tf.compat.v1.placeholder(dtype=tf.int32, name=self.regressor_name + 'input_num')
         # vae_option
-        self.vae_option = tf.placeholder(dtype=tf.int32, name=self.regressor_name + 'vae_option')
+        #tf.reset_default_graph()
+        self.vae_option = tf.compat.v1.placeholder(dtype=tf.int32, name=self.regressor_name + 'vae_option')
 
         _, x_input_dr = self.__ae__(x_input)
         # reconstruct the graph
         predictions_tensor, gate = self._construct_model(x_input, x_input_dr, tau_input)
 
-        print("【Ready to Load Model in " + self.model_file + "】")
 
         # tensorflow saver
-        saver = tf.compat.v1.train.Saver()
+        #saver = tf.compat.v1.train.Saver()
         with tf.compat.v1.Session() as sess:
             #saver.restore(sess,self.model_file)
+            #saver = tf.train.import_meta_graph('pretrained_models/sel/sel-119.meta')
+            saver = tf.train.import_meta_graph(tf.train.latest_checkpoint(self.model_file)+".meta")
+            #saver.restore(sess, tf.train.latest_checkpoint("pretrained_models/sel"))
             saver.restore(sess,tf.train.latest_checkpoint(self.model_file))
-
+        
 
             # make prediction
             startTime = timer()
+            
+            sess.run(tf.global_variables_initializer())
             predictions = sess.run(predictions_tensor, 
                             feed_dict={x_input: test_X, 
                                             tau_input: test_tau,

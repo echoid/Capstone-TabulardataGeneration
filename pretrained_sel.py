@@ -11,11 +11,11 @@ from selnet import *
 
 # data = np.load("dataset/train/adult_converted.npy")
 # query = np.load("dataset/train/adult_converted.npy")
-# np.random.seed(20)
-# sc = np.random.choice(data.shape[0], int(data.shape[0]*0.5), replace=False)
-# query = data[sc]
+# #np.random.seed(20)
+# #sc = np.random.choice(data.shape[0], int(data.shape[0]*0.5), replace=False)
+# #query = data[sc]
 # sel = sel_generation(data,query)
-# np.save("dataset/train/adult_converted_sel_50pct.npy",sel)
+# np.save("dataset/train/adult_converted_sel.npy",sel)
 
 
 
@@ -23,9 +23,9 @@ from selnet import *
 loss_option = 'huber_log'
 partition_option = 'l2'
 
-dataFile = 'dataset/train/adult_converted_sel_full.npy'
+dataFile = 'dataset/train/adult_converted_sel.npy'
 
-valid_file = 'dataset/train/adult_converted_sel_50pct.npy'
+valid_file = 'dataset/train/adult_converted_sel.npy'
 
 
 
