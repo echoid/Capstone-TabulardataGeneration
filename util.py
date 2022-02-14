@@ -405,10 +405,12 @@ def DCR(dataset):
     return (maxi,mini) 
 
 
-def fd_calculated(df_fake,fd_model,y_fake):
-
+def fd_calculated(df_fake,fd_model,y_fake,model,method):
+    
     path = "pretrained_models/"
-    model = tf.keras.models.load_model(path + fd_model)
+    if method == "full":
+        model = tf.keras.models.load_model(path + fd_model)
+
 
     with open(path+"base_acc.json", 'r') as f:
         acc_dict = json.load(f)

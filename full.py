@@ -150,8 +150,12 @@ epochs, lr, dataloader, z_dim, dataset,
 col_type, sample_times, itertimes = 100, 
 steps_per_epoch = None, GPU=False, KL=True, method = "ITS",verbose = False):
 
-    # model_path = "pretrained_models/"
-    # fd_model = tf.keras.models.load_model(model_path + fd_type)
+    if method != "full":
+
+        model_path = "pretrained_models/"
+        fd_model = tf.keras.models.load_model(model_path + fd_type)
+    else:
+        fd_model = None
 
     torch.manual_seed(0)
     torch.cuda.manual_seed(0)
@@ -231,7 +235,7 @@ steps_per_epoch = None, GPU=False, KL=True, method = "ITS",verbose = False):
                     
                     df_fake = to_df(x_fake,dataset)
                     
-                    G_fd = fd_calculated(df_fake,fd_type,y_fake)
+                    G_fd = fd_calculated(df_fake,fd_type,y_fake,fd_model)
                 else:
                     G_fd = 0
 
