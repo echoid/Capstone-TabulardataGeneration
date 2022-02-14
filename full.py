@@ -15,6 +15,7 @@ import numpy as np
 import pandas as pd
 import tensorflow as tf
 import warnings
+import csv
 warnings.filterwarnings("ignore", category=DeprecationWarning) 
 
 
@@ -149,8 +150,8 @@ epochs, lr, dataloader, z_dim, dataset,
 col_type, sample_times, itertimes = 100, 
 steps_per_epoch = None, GPU=False, KL=True, method = "ITS",verbose = False):
 
-    model_path = "pretrained_models/"
-    fd_model = tf.keras.models.load_model(model_path + fd_type)
+    # model_path = "pretrained_models/"
+    # fd_model = tf.keras.models.load_model(model_path + fd_type)
 
     torch.manual_seed(0)
     torch.cuda.manual_seed(0)
@@ -173,7 +174,6 @@ steps_per_epoch = None, GPU=False, KL=True, method = "ITS",verbose = False):
     for epoch in range(epochs):
         it = 0
         print("-----------Epoch {}-----------".format(epoch))
-
         
         while it < steps_per_epoch:
             
@@ -226,12 +226,12 @@ steps_per_epoch = None, GPU=False, KL=True, method = "ITS",verbose = False):
                 x_fake = G(z)
                 y_fake = D(x_fake)
 
-                if (method == "ITS") or (method == "fd"):
+                if (method == "ITS") or (method == "fd") or (method == "full"):
                     # dataset 就是train data
+                    
                     df_fake = to_df(x_fake,dataset)
                     
-                    G_fd = fd_calculated(df_fake,fd_type,y_fake,fd_model)
-
+                    G_fd = fd_calculated(df_fake,fd_type,y_fake)
                 else:
                     G_fd = 0
 
@@ -244,7 +244,7 @@ steps_per_epoch = None, GPU=False, KL=True, method = "ITS",verbose = False):
 
                 G_origin = F.binary_cross_entropy(y_fake, real_label)
 
-                if (method == "ITS") or (method == "mean"):
+                if (method == "ITS") or (method == "mean") or (method == "full"):
                     G_mean = mean_Loss(x_fake, x_real, col_type, dataset.col_dim)
                 else:
                     G_mean = 0
@@ -255,7 +255,7 @@ steps_per_epoch = None, GPU=False, KL=True, method = "ITS",verbose = False):
                 else:
                     G_KL = 0
 
-                if (method == "ITS") or (method == "sel"):
+                if (method == "sel") or (method == "full"):
                     
                     G_sel = sel_loss(x_fake,dataset,sel_train,partition_option, loss_option,fields)
                     
@@ -431,10 +431,23 @@ def generation(fd, method):
         sample_times, itertimes = 100, steps_per_epoch = config["steps_per_epoch"], GPU=GPU, KL=KL, method = method)
 
 
+generation("strong_cate","full")
+generation("weak_cate","full")
+generation("strong_num","full")
+generation("weak_num","full")
+
+
 # generation("strong_cate","ITS")
 # generation("weak_cate","ITS")
 # generation("strong_num","ITS")
-generation("weak_num","sel")
+# generation("weak_num","ITS")
+
+
+
+
+
+
+
 #sel_loss_2()
 #sel_loss()
 

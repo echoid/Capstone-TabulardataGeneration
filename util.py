@@ -20,6 +20,8 @@ from sklearn.metrics.cluster import normalized_mutual_info_score
 import os 
 
 
+
+
 def convert_type(data,columns):
     data[columns] = data[columns].astype('category')
     new_data = data.copy()
@@ -403,9 +405,11 @@ def DCR(dataset):
     return (maxi,mini) 
 
 
-def fd_calculated(df_fake,fd_model,y_fake,model):
+def fd_calculated(df_fake,fd_model,y_fake):
 
     path = "pretrained_models/"
+    model = tf.keras.models.load_model(path + fd_model)
+
     with open(path+"base_acc.json", 'r') as f:
         acc_dict = json.load(f)
 
@@ -414,6 +418,7 @@ def fd_calculated(df_fake,fd_model,y_fake,model):
     if fd_model == "strong_num":
         Input = df_fake[["education-num","capital-gain"]].astype('float32')
         Output = df_fake["hours-per-week"]
+
 
         fd = model.evaluate(Input,y_fake,verbose=False) - acc_dict[fd_model]
 
