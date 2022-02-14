@@ -5,6 +5,7 @@ from synthesizer import V_Train
 from util import to_df,KL_Loss,mean_Loss,fd_calculated,sel_loss
 from random import choice
 import os
+import sys
 from selnet import *
 import json
 import numpy as np
@@ -15,7 +16,6 @@ import numpy as np
 import pandas as pd
 import tensorflow as tf
 import warnings
-import csv
 warnings.filterwarnings("ignore", category=DeprecationWarning) 
 
 
@@ -431,16 +431,13 @@ def generation(fd, method):
         sample_times, itertimes = 100, steps_per_epoch = config["steps_per_epoch"], GPU=GPU, KL=KL, method = method)
 
 
-# generation("strong_cate","full")
-# generation("weak_cate","full")
-# generation("strong_num","full")
-# generation("weak_num","full")
+generation(sys.argv[0],sys.argv[1])
 
 
-generation("strong_cate","ITS")
-generation("weak_cate","ITS")
-generation("strong_num","ITS")
-generation("weak_num","ITS")
+# generation("strong_cate","ITS")
+# generation("weak_cate","ITS")
+# generation("strong_num","ITS")
+# generation("weak_num","ITS")
 
 
 
