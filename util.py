@@ -17,6 +17,7 @@ from sklearn.preprocessing import MinMaxScaler
 from tqdm import tqdm
 from sklearn.cluster import KMeans
 from sklearn.metrics.cluster import normalized_mutual_info_score
+from tensorflow.python.keras.backend import set_session
 import os 
 
 
@@ -405,11 +406,11 @@ def DCR(dataset):
     return (maxi,mini) 
 
 
-def fd_calculated(df_fake,fd_model,y_fake,model,method):
+def fd_calculated(df_fake,fd_model,y_fake,model,method,fd_graph,fd_session):
     
     path = "pretrained_models/"
-    if method == "full":
-        model = tf.keras.models.load_model(path + fd_model)
+    # if method == "full":
+    #     model = tf.keras.models.load_model(path + fd_model)
 
 
     with open(path+"base_acc.json", 'r') as f:
@@ -420,9 +421,9 @@ def fd_calculated(df_fake,fd_model,y_fake,model,method):
     if fd_model == "strong_num":
         Input = df_fake[["education-num","capital-gain"]].astype('float32')
         Output = df_fake["hours-per-week"]
-
-
-        fd = model.evaluate(Input,y_fake,verbose=False) - acc_dict[fd_model]
+        with fd_graph.as_default():
+            set_session(fd_session)
+            fd = model.evaluate(Input,y_fake,verbose=False) - acc_dict[fd_model] # square
 
         # predicted = model.predict(Input).flatten()
 
@@ -437,8 +438,9 @@ def fd_calculated(df_fake,fd_model,y_fake,model,method):
 
         # predicted = model.predict(Input).flatten()
         # fd  = sum(abs(predicted-Output))/y_fake.shape[0]
-
-        fd = model.evaluate(Input,y_fake,verbose=False)
+        with fd_graph.as_default():
+            set_session(fd_session)
+            fd = model.evaluate(Input,y_fake,verbose=False)
 
         return fd
 
@@ -455,7 +457,9 @@ def fd_calculated(df_fake,fd_model,y_fake,model,method):
         sex = pd.get_dummies(df_fake["sex"])
         Input = np.concatenate((np.array(ms),np.array(sex)),axis=1)
         Output = np.argmax(np.array(pd.get_dummies(df_fake["relationship"])),axis = 1)
-        predicted = np.argmax(model.predict(Input),axis = 1)
+        with fd_graph.as_default():
+            set_session(fd_session)
+            predicted = np.argmax(model.predict(Input),axis = 1)
         fd = (np.sum(Output != predicted)/y_fake.shape[0] - acc_dict[fd_model]) * 100
 
         return fd 
@@ -468,7 +472,9 @@ def fd_calculated(df_fake,fd_model,y_fake,model,method):
        'Masters', 'Preschool', 'Prof-school', 'Some-college'],dtype='object').fillna(0))
        
         Output = np.argmax(np.array(pd.get_dummies(df_fake["occupation"])),axis = 1)
-        predicted = np.argmax(model.predict(Input),axis = 1) 
+        with fd_graph.as_default():
+            set_session(fd_session)
+            predicted = np.argmax(model.predict(Input),axis = 1) 
         fd = (np.sum(Output != predicted)- acc_dict[fd_model]) * 100
 
         return fd
@@ -488,7 +494,47 @@ def eval_(predictions, labels):
     return (mse, mae, mape)
 
 
-def sel_loss(x_fake,dataset,sel_train,partition_option, loss_option,fields):
+def sel_net(sel_train,tau_part_num = 50,partition_option ='huber_log' , loss_option = 'l2'):
+
+    # for seletivity
+    loss_option = 'huber_log'
+    partition_option = 'l2'
+    unit_len = 100
+    max_tau = 1 #54.0
+
+    hidden_units = [512, 512, 512, 256]
+    vae_hidden_units = [512, 256, 128]
+
+    batch_size = 512
+    #epochs = 1500
+    epochs = 120
+    epochs_vae = 100
+    learning_rate = 0.00003
+    log_option = False
+    tau_embedding_size = 5
+    original_x_dim = sel_train.shape[1]
+    dimreduce_x_dim = original_x_dim
+
+
+
+    test_data_predictions_labels_file = os.path.join('./test_face_d128_2M_smallSel_huber_log/', 'test_predictions.npy')
+    valid_data_predictions_labels_file = os.path.join('./test_face_d128_2M_smallSel_huber_log/', 'valid_predictions_labels_one_epoch_')
+
+    regression_name = 'adult'
+    regression_model_dir = 'pretrained_models/sel'
+
+
+
+    regressor = SelNet(hidden_units, vae_hidden_units, batch_size, epochs, epochs_vae,
+                            learning_rate, log_option, tau_embedding_size, original_x_dim, dimreduce_x_dim,
+                            test_data_predictions_labels_file, valid_data_predictions_labels_file, regression_name, 
+                            regression_model_dir, unit_len, max_tau, tau_part_num, partition_option, loss_option)
+
+    return regressor
+
+
+
+def sel_loss(x_fake,dataset,sel_train,fields,regressor):
 #def sel_loss():
     df_fake = to_df(x_fake,dataset)
     generated = Dataset(
@@ -532,36 +578,39 @@ def sel_loss(x_fake,dataset,sel_train,partition_option, loss_option,fields):
     test_Y = np.array(test_data[:, -1], dtype=np.float32)
 
 
-    unit_len = 100
-    max_tau = 1 #54.0
+    # unit_len = 100
+    # max_tau = 1 #54.0
 
-    hidden_units = [512, 512, 512, 256]
-    vae_hidden_units = [512, 256, 128]
+    # hidden_units = [512, 512, 512, 256]
+    # vae_hidden_units = [512, 256, 128]
 
-    batch_size = 512
-    #epochs = 1500
-    epochs = 120
-    epochs_vae = 100
-    learning_rate = 0.00003
-    log_option = False
-    tau_embedding_size = 5
-    original_x_dim = test_original_X.shape[1]
-    dimreduce_x_dim = x_reducedim
+    # batch_size = 512
+    # #epochs = 1500
+    # epochs = 120
+    # epochs_vae = 100
+    # learning_rate = 0.00003
+    # log_option = False
+    # tau_embedding_size = 5
+    # original_x_dim = test_original_X.shape[1]
+    
+    # dimreduce_x_dim = x_reducedim
 
-
-
-    test_data_predictions_labels_file = os.path.join('./test_face_d128_2M_smallSel_huber_log/', 'test_predictions.npy')
-    valid_data_predictions_labels_file = os.path.join('./test_face_d128_2M_smallSel_huber_log/', 'valid_predictions_labels_one_epoch_')
-
-    regression_name = 'adult'
-    regression_model_dir = 'pretrained_models/sel'
+    # print("test_original_X",test_original_X.shape)
+    # print("test_data.shape",x_dim)
 
 
+    # test_data_predictions_labels_file = os.path.join('./test_face_d128_2M_smallSel_huber_log/', 'test_predictions.npy')
+    # valid_data_predictions_labels_file = os.path.join('./test_face_d128_2M_smallSel_huber_log/', 'valid_predictions_labels_one_epoch_')
 
-    regressor = SelNet(hidden_units, vae_hidden_units, batch_size, epochs, epochs_vae,
-                            learning_rate, log_option, tau_embedding_size, original_x_dim, dimreduce_x_dim,
-                            test_data_predictions_labels_file, valid_data_predictions_labels_file, regression_name, 
-                            regression_model_dir, unit_len, max_tau, tau_part_num, partition_option, loss_option)
+    # regression_name = 'adult'
+    # regression_model_dir = 'pretrained_models/sel'
+
+
+
+    # regressor = SelNet(hidden_units, vae_hidden_units, batch_size, epochs, epochs_vae,
+    #                         learning_rate, log_option, tau_embedding_size, original_x_dim, dimreduce_x_dim,
+    #                         test_data_predictions_labels_file, valid_data_predictions_labels_file, regression_name, 
+    #                         regression_model_dir, unit_len, max_tau, tau_part_num, partition_option, loss_option)
 
 
 
