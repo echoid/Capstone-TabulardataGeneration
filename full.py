@@ -349,7 +349,6 @@ def generation(fd, method):
         sample_times, itertimes = 100, steps_per_epoch = config["steps_per_epoch"], GPU=GPU, KL=KL, method = method)
 
 
-
 generation(sys.argv[1],sys.argv[2])
 # generation("strong_num","full")
 # generation("weak_num","full")
