@@ -227,7 +227,7 @@ def fd_calculated(df_fake,fd_model,y_fake,model,method,fd_graph,fd_session):
         Output = df_fake["hours-per-week"]
         with fd_graph.as_default():
             set_session(fd_session)
-            fd = model.evaluate(Input,y_fake,verbose=False) - acc_dict[fd_model] # square
+            fd = abs(model.evaluate(Input,y_fake,verbose=False) - acc_dict[fd_model]) # square
 
         # predicted = model.predict(Input).flatten()
 
@@ -264,7 +264,7 @@ def fd_calculated(df_fake,fd_model,y_fake,model,method,fd_graph,fd_session):
         with fd_graph.as_default():
             set_session(fd_session)
             predicted = np.argmax(model.predict(Input),axis = 1)
-        fd = (np.sum(Output != predicted)/y_fake.shape[0] - acc_dict[fd_model]) * 100
+        fd = abs(np.sum(Output != predicted)/y_fake.shape[0] - acc_dict[fd_model])
 
         return fd 
 
@@ -279,7 +279,7 @@ def fd_calculated(df_fake,fd_model,y_fake,model,method,fd_graph,fd_session):
         with fd_graph.as_default():
             set_session(fd_session)
             predicted = np.argmax(model.predict(Input),axis = 1) 
-        fd = (np.sum(Output != predicted)- acc_dict[fd_model]) * 100
+        fd = abs(np.sum(Output != predicted)- acc_dict[fd_model])
 
         return fd
 

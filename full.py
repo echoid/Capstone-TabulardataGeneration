@@ -349,7 +349,8 @@ def generation(fd, method):
 
 
 # generation("strong_cate","full")
-generation("weak_cate","full")
+#generation("weak_cate","full")
+generation(sys.argv[1],sys.argv[2])
 # generation("strong_num","full")
 # generation("weak_num","full")
 
