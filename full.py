@@ -16,6 +16,7 @@ import pandas as pd
 import tensorflow as tf
 import warnings
 import csv
+import sys
 from tensorflow.python.keras.backend import set_session
 warnings.filterwarnings("ignore", category=DeprecationWarning) 
 
@@ -348,8 +349,8 @@ def generation(fd, method):
         sample_times, itertimes = 100, steps_per_epoch = config["steps_per_epoch"], GPU=GPU, KL=KL, method = method)
 
 
-# generation("strong_cate","full")
-generation("weak_cate","full")
+
+generation(sys.argv[1],sys.argv[2])
 # generation("strong_num","full")
 # generation("weak_num","full")
 

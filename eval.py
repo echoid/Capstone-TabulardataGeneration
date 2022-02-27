@@ -4,6 +4,8 @@ from sklearn.preprocessing import MinMaxScaler
 from sklearn.cluster import KMeans
 from sklearn.metrics.cluster import normalized_mutual_info_score
 import pandas as pd
+import numpy as np
+from tqdm import tqdm
 
 
 
