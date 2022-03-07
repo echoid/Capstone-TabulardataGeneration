@@ -1,0 +1,90 @@
+commit 89394b5d583328fbc1cf08afe480b5b02cf76a75
+Author: Youran Zhou <youran@spartan-login1.hpc.unimelb.edu.au>
+Date:   Mon Mar 7 22:47:31 2022 +1100
+
+    update read me
+
+commit 8a6ff361eeb1a23884ab26ef3d712877d6507d48
+Author: Youran Zhou <youran@spartan-login2.hpc.unimelb.edu.au>
+Date:   Fri Mar 4 15:45:52 2022 +1100
+
+    regular update
+
+commit ef84714e3fa344e5ea9743b67471a4dae75a0e58
+Author: Youran Zhou <youran@spartan-login2.hpc.unimelb.edu.au>
+Date:   Mon Feb 28 11:46:46 2022 +1100
+
+    ignore update,date upload
+
+commit 0c5d0716eed309f7ab21b7d1ea2d9533f8239171
+Merge: 5862f38 0d96c87
+Author: Echoid <youranzhou0724@gmail.com>
+Date:   Mon Feb 28 10:42:12 2022 +1100
+
+    eval
+
+commit 5862f383cb7f54184eab5ce2421a2705245cbe15
+Author: Echoid <youranzhou0724@gmail.com>
+Date:   Mon Feb 28 10:40:23 2022 +1100
+
+    eval
+
+commit 0d96c87a702ac0b4f58e1df874624da272a3d647
+Author: Youran Zhou <youran@spartan-login2.hpc.unimelb.edu.au>
+Date:   Mon Feb 28 10:07:46 2022 +1100
+
+    abs error
+
+commit 87adfbbb110da219338fd7770fed0bb559ed446a
+Author: Youran Zhou <youran@spartan-login2.hpc.unimelb.edu.au>
+Date:   Wed Feb 16 12:09:18 2022 +1100
+
+    update spartan
+
+commit 154c32f68bbdfdf391cb2ec90e813cf602e77614
+Author: Echoid <youranzhou0724@gmail.com>
+Date:   Wed Feb 16 11:38:48 2022 +1100
+
+    update efficiency
+
+commit 0c3c9e5e14777ac85b68c4643c74206eef2a67c5
+Author: Echoid <youranzhou0724@gmail.com>
+Date:   Tue Feb 15 09:26:04 2022 +1100
+
+    update script
+
+commit 4ecd5014268a7fdd0a0f17ceb04116cd22afa7ff
+Author: Youran Zhou <youran@spartan-login2.hpc.unimelb.edu.au>
+Date:   Mon Feb 14 22:01:36 2022 +1100
+
+    spartan submission
+
+commit ea20d923899375d0e6edaf9bb8a652d478b718a1
+Author: Echoid <youranzhou0724@gmail.com>
+Date:   Mon Feb 14 19:59:52 2022 +1100
+
+    finished
+
+commit 0bfc704d4ae9fc6902da3f7a370e1bfa193ec88d
+Author: Echoid <youranzhou0724@gmail.com>
+Date:   Sun Feb 13 23:51:36 2022 +1100
+
+    git reset
+
+commit 0300badc98ba4e756d4b947d9a3964b9ed74773f
+Author: Echoid <youranzhou0724@gmail.com>
+Date:   Sun Feb 13 23:48:03 2022 +1100
+
+    reset
+
+commit fdce6663aef05394aed63d14c70fae9af2c7b61c
+Author: Echoid <youranzhou0724@gmail.com>
+Date:   Sat Feb 5 22:41:06 2022 +1100
+
+    pretrain models
+
+commit 292b8876af0f547830a65d0afd29a2591dc7a9dd
+Author: echoid <youranzhou0724@gmail.com>
+Date:   Sat Feb 5 16:38:47 2022 +1100
+
+    Initial commit

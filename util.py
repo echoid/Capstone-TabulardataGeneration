@@ -12,7 +12,11 @@ from tensorflow.python.keras.backend import set_session
 import os 
 
 
-
+def boolean_conv(result):
+    if result == "True":
+        return True
+    return False
+    
 
 def convert_type(data,columns):
     data[columns] = data[columns].astype('category')
@@ -210,7 +214,7 @@ def convert_type(data,columns):
 
 
 
-def fd_calculated(df_fake,fd_model,y_fake,model,method,fd_graph,fd_session):
+def fd_calculated(df_fake,fd_model,y_fake,model,fd_graph,fd_session):
     
     path = "pretrained_models/"
     # if method == "full":

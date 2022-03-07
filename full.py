@@ -241,7 +241,7 @@ steps_per_epoch = None, GPU=False, KL=True, method = "ITS",verbose = False):
                 x_fake = G(z)
                 y_fake = D(x_fake)
 
-                if (method == "ITS") or (method == "fd") or (method == "full"):
+                if (method == "ITS") or (method == "full"):
                     # dataset 就是train data
                     
                     df_fake = to_df(x_fake,dataset)
@@ -258,11 +258,7 @@ steps_per_epoch = None, GPU=False, KL=True, method = "ITS",verbose = False):
                     real_label = real_label.cuda()
 
                 G_origin = F.binary_cross_entropy(y_fake, real_label)
-
-                if (method == "ITS") or (method == "mean") or (method == "full"):
-                    G_mean = mean_Loss(x_fake, x_real, col_type, dataset.col_dim)
-                else:
-                    G_mean = 0
+                G_mean = mean_Loss(x_fake, x_real, col_type, dataset.col_dim)
 
                 if KL:
                     G_KL = KL_Loss(x_fake, x_real, col_type, dataset.col_dim)
