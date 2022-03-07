@@ -144,11 +144,10 @@ dmypy.json
 
 # Cython debug symbols
 cython_debug/
-slurms
+slurms/
 dataset/
 .history/
 dataset/generated
-pretrained_models/
 dataset/train/
 __pycache__
 *.out
