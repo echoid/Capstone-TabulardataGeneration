@@ -146,7 +146,7 @@ dmypy.json
 cython_debug/
 dataset/
 .history/
-dataset/generated
+dataset/generated/
 dataset/train/
 __pycache__
 *.out
