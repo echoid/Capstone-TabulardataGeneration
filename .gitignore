@@ -144,10 +144,9 @@ dmypy.json
 
 # Cython debug symbols
 cython_debug/
-dataset/
 .history/
-dataset/generated/
-dataset/train/
+*.npy
+*.csv
 __pycache__
 # PyCharm
 #  JetBrains specific template is maintained in a separate JetBrains.gitignore that can
