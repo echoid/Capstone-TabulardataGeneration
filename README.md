@@ -14,14 +14,37 @@ Adult: https://github.com/ruclty/Daisy/blob/master/dataset/adult_train.csv
 
 ### To run this model (Adult example) 
 
-** generated pre-trained functional dependiencies models. 
+(Fixed, tf 1.0 will work.)
+We need a tensorflow 2.x version to generate high dimension data
+```
+conda activate daisy
+```
+
+
+** generated pre-trained functional dependiencies models. (Not neccessary)
+```
 python pretrained_fd.py 
+```
+
 
 ** preprocess data, generate high dim representation
-python selectivity_generation.py
+```
+python data_preprocess.py [filename from dataset/origin]
+python data_preprocess.py adult
 
+```
+preprocessed high dimension data will store at dataset/train filename_preprocessed.npy
+
+
+
+We need a tensorflow 1.x version to train model
+```
+conda activate tanlegan
+```
 ** pretrained selectivity model
-python pretrained_sel.py 
+```
+python pretrained_sel.py adult
+```
 
 
 ### Access Spartan

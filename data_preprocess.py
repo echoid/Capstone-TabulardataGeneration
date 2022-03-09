@@ -11,11 +11,16 @@ from selnet import *
 from data import NumericalField, CategoricalField, Iterator
 from data import Dataset
 
-train = pd.read_csv("dataset/train/adult.csv")
+origin_path = "dataset/origin/"
+save_path = "dataset/train/"
+dataname = sys.argv[1] + ".csv"
 
+train = pd.read_csv(origin_path + dataname)
+
+# could be changed
 config = { 
-        "name": "adult_fd_test",
-		"train": "adult.csv",
+        "name": sys.argv[1],
+		"train": dataname,
 		"gmm_cols":[],
 		"normalize_cols":[0,2,4,10,11,12],
 		"one-hot_cols":[1,3,5,6,7,8,9,13,14],
@@ -58,7 +63,7 @@ for i, col in enumerate(list(train)):
 
 trn = Dataset.split(
     fields = fields,
-    path = "dataset/train/",
+    path = origin_path,
     train = config["train"],
     format = "csv",
 )[0]
@@ -67,8 +72,9 @@ train_it= Iterator.split(
     batch_size = 128,
     train = trn)[0]
 
-train_data = np.array(tf.concat([data for data in train_it], axis=0))
+#train_data = np.array(tf.concat([data for data in train_it], axis=0))
+train_data = tf.concat([data for data in train_it], axis=0).eval(session=tf.compat.v1.Session())
 
-#np.save("dataset/train/adult_converted.npy",train_data)
+np.save(save_path+sys.argv[1]+"_preprocessed.npy",train_data)
 
 print("Data converted, new dim: ",train_data.shape)

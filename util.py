@@ -49,6 +49,9 @@ def sel_generation(data, queries):
         predict = []
         predict_1 = []
         _query = queries[rid: rid + 1]
+
+        print("datashape:",data.shape)
+        print("queryshape:",_query.shape)
         
         # the distance between each query and database 
         # 每一条query都有30000个result，记录和原始数据的distance

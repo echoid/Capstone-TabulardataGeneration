@@ -1,0 +1,54 @@
+
+The following have been reloaded with a version change:
+  1) pillow/7.2.0-python-3.7.4 => pillow/6.2.1
+
+2022-03-09 18:58:45.624814: I tensorflow/stream_executor/platform/default/dso_loader.cc:44] Successfully opened dynamic library libcudart.so.10.1
+2022-03-09 19:00:51.226252: I tensorflow/stream_executor/platform/default/dso_loader.cc:44] Successfully opened dynamic library libcuda.so.1
+2022-03-09 19:00:51.228305: I tensorflow/core/common_runtime/gpu/gpu_device.cc:1618] Found device 0 with properties: 
+name: Tesla V100-SXM2-16GB major: 7 minor: 0 memoryClockRate(GHz): 1.53
+pciBusID: 0000:1e:00.0
+2022-03-09 19:00:51.228362: I tensorflow/stream_executor/platform/default/dso_loader.cc:44] Successfully opened dynamic library libcudart.so.10.1
+2022-03-09 19:00:51.238246: I tensorflow/stream_executor/platform/default/dso_loader.cc:44] Successfully opened dynamic library libcublas.so.10
+2022-03-09 19:00:51.241011: I tensorflow/stream_executor/platform/default/dso_loader.cc:44] Successfully opened dynamic library libcufft.so.10
+2022-03-09 19:00:51.242275: I tensorflow/stream_executor/platform/default/dso_loader.cc:44] Successfully opened dynamic library libcurand.so.10
+2022-03-09 19:00:51.246172: I tensorflow/stream_executor/platform/default/dso_loader.cc:44] Successfully opened dynamic library libcusolver.so.10
+2022-03-09 19:00:51.248232: I tensorflow/stream_executor/platform/default/dso_loader.cc:44] Successfully opened dynamic library libcusparse.so.10
+2022-03-09 19:00:51.252274: I tensorflow/stream_executor/platform/default/dso_loader.cc:44] Successfully opened dynamic library libcudnn.so.7
+2022-03-09 19:00:51.253961: I tensorflow/core/common_runtime/gpu/gpu_device.cc:1746] Adding visible gpu devices: 0
+2022-03-09 19:00:51.254604: I tensorflow/core/platform/cpu_feature_guard.cc:145] This TensorFlow binary is optimized with Intel(R) MKL-DNN to use the following CPU instructions in performance critical operations:  SSE3 SSE4.1 SSE4.2 AVX AVX2 AVX512F FMA
+To enable them in non-MKL-DNN operations, rebuild TensorFlow with the appropriate compiler flags.
+2022-03-09 19:00:51.275885: I tensorflow/core/common_runtime/gpu/gpu_device.cc:1618] Found device 0 with properties: 
+name: Tesla V100-SXM2-16GB major: 7 minor: 0 memoryClockRate(GHz): 1.53
+pciBusID: 0000:1e:00.0
+2022-03-09 19:00:51.275929: I tensorflow/stream_executor/platform/default/dso_loader.cc:44] Successfully opened dynamic library libcudart.so.10.1
+2022-03-09 19:00:51.275955: I tensorflow/stream_executor/platform/default/dso_loader.cc:44] Successfully opened dynamic library libcublas.so.10
+2022-03-09 19:00:51.275973: I tensorflow/stream_executor/platform/default/dso_loader.cc:44] Successfully opened dynamic library libcufft.so.10
+2022-03-09 19:00:51.275990: I tensorflow/stream_executor/platform/default/dso_loader.cc:44] Successfully opened dynamic library libcurand.so.10
+2022-03-09 19:00:51.276007: I tensorflow/stream_executor/platform/default/dso_loader.cc:44] Successfully opened dynamic library libcusolver.so.10
+2022-03-09 19:00:51.276025: I tensorflow/stream_executor/platform/default/dso_loader.cc:44] Successfully opened dynamic library libcusparse.so.10
+2022-03-09 19:00:51.276042: I tensorflow/stream_executor/platform/default/dso_loader.cc:44] Successfully opened dynamic library libcudnn.so.7
+2022-03-09 19:00:51.284051: I tensorflow/core/common_runtime/gpu/gpu_device.cc:1746] Adding visible gpu devices: 0
+2022-03-09 19:00:51.284185: I tensorflow/core/common_runtime/gpu/gpu_device.cc:1159] Device interconnect StreamExecutor with strength 1 edge matrix:
+2022-03-09 19:00:51.284203: I tensorflow/core/common_runtime/gpu/gpu_device.cc:1165]      0 
+2022-03-09 19:00:51.284212: I tensorflow/core/common_runtime/gpu/gpu_device.cc:1178] 0:   N 
+2022-03-09 19:00:51.288026: I tensorflow/core/common_runtime/gpu/gpu_device.cc:1304] Created TensorFlow device (/job:localhost/replica:0/task:0/device:GPU:0 with 14251 MB memory) -> physical GPU (device: 0, name: Tesla V100-SXM2-16GB, pci bus id: 0000:1e:00.0, compute capability: 7.0)
+2022-03-09 19:00:51.291362: I tensorflow/core/common_runtime/process_util.cc:115] Creating new thread pool with default inter op setting: 2. Tune using inter_op_parallelism_threads for best performance.
+  0%|          | 0/64 [00:00<?, ?it/s]  0%|          | 0/64 [00:00<?, ?it/s]
+True
+-----------Epoch 0-----------
+datashape: (2375, 104)
+queryshape: (1, 105)
+Traceback (most recent call last):
+  File "onlysel.py", line 350, in <module>
+    generation(sys.argv[1],sys.argv[2],sys.argv[3],sys.argv[4],sys.argv[5])
+  File "onlysel.py", line 347, in generation
+    KL=KL, mean = boolean_conv(mean), fd = boolean_conv(fd), sel = boolean_conv(sel))
+  File "onlysel.py", line 273, in V_Train
+    G_sel = sel_loss(x_fake,dataset,sel_train,fields,sel_model)
+  File "/data/gpfs/projects/punim1578/code/Capstone-TabulardataGeneration/util.py", line 365, in sel_loss
+    test_data = sel_generation(sel_train,generated_data)
+  File "/data/gpfs/projects/punim1578/code/Capstone-TabulardataGeneration/util.py", line 58, in sel_generation
+    res = distance.cdist(data, _query, 'cosine')
+  File "/usr/local/easybuild-2019/easybuild/software/mpi/gcc-cuda/8.3.0-10.1.243/openmpi/3.1.4/scipy-bundle/2019.10-python-3.7.4/lib/python3.7/site-packages/scipy/spatial/distance.py", line 2721, in cdist
+    raise ValueError('XA and XB must have the same number of columns '
+ValueError: XA and XB must have the same number of columns (i.e. feature dimension.)
