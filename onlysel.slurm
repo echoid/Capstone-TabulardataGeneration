@@ -22,5 +22,5 @@ module load pytorch/1.5.1-python-3.7.4
 module load tqdm/4.41.1
 
 
-python onlysel.py Adult False False True only_sel
+python onlysel.py adult False False True only_sel
 

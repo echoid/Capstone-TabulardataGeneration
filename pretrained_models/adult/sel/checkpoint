@@ -1,4 +1,4 @@
-model_checkpoint_path: "sel-119"
-all_model_checkpoint_paths: "sel-0"
-all_model_checkpoint_paths: "sel-100"
-all_model_checkpoint_paths: "sel-119"
+model_checkpoint_path: "adult-119"
+all_model_checkpoint_paths: "adult-0"
+all_model_checkpoint_paths: "adult-100"
+all_model_checkpoint_paths: "adult-119"

@@ -21,7 +21,7 @@ from tensorflow.python.keras.backend import set_session
 warnings.filterwarnings("ignore", category=DeprecationWarning) 
 
 
-
+dataname = sys.argv[1]
 
 
 VGAN_variable = {

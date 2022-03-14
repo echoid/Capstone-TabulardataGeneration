@@ -9,28 +9,36 @@ import pandas as pd
 import os
 from selnet import *
 
+filename = sys.argv[1]
+path = "dataset/train/"
+dataFile = path + filename + "_query.npy"
+
 # data = np.load("dataset/train/adult_converted.npy")
 # query = np.load("dataset/train/adult_converted.npy")
-# #np.random.seed(20)
-# #sc = np.random.choice(data.shape[0], int(data.shape[0]*0.5), replace=False)
-# #query = data[sc]
-# sel = sel_generation(data,query)
-# np.save("dataset/train/adult_converted_sel.npy",sel)
+
+data = np.load(path + filename + "_preprocessed.npy")
+query = np.load(path + filename + "_preprocessed.npy")
+
+# # #np.random.seed(20)
+# # #sc = np.random.choice(data.shape[0], int(data.shape[0]*0.5), replace=False)
+# # #query = data[sc]
+
+sel = sel_generation(data,query)
 
 
+np.save(dataFile,sel)
 
 
 loss_option = 'huber_log'
 partition_option = 'l2'
 
-dataFile = 'dataset/train/adult_converted_sel.npy'
-
-valid_file = 'dataset/train/adult_converted_sel.npy'
 
 
+# train_data = np.load("dataset/train/face_trainingData.npy")
+# valid_data = np.load("dataset/train/face_validationData.npy")
 
 train_data = np.load(dataFile)
-valid_data = np.load(valid_file)
+valid_data = np.load(dataFile)
 
 x_dim = train_data.shape[1]-2
 x_reducedim = x_dim
@@ -85,11 +93,12 @@ dimreduce_x_dim = x_reducedim
 test_data_predictions_labels_file = os.path.join('./test_face_d128_2M_smallSel_huber_log/', 'test_predictions.npy')
 valid_data_predictions_labels_file = os.path.join('./test_face_d128_2M_smallSel_huber_log/', 'valid_predictions_labels_one_epoch_')
 
-regression_name = 'adult'
-regression_model_dir = 'pretrained_models/sel'
+regression_name = filename
+regression_model_dir = 'pretrained_models/'+ filename +"/sel/{}".format(sys.argv[1])
 
 
-# train
+
+# # train
 regressor = SelNet(hidden_units, vae_hidden_units, batch_size, epochs, epochs_vae,
                          learning_rate, log_option, tau_embedding_size, original_x_dim, dimreduce_x_dim,
                          test_data_predictions_labels_file, valid_data_predictions_labels_file, regression_name, 

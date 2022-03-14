@@ -305,7 +305,7 @@ def eval_(predictions, labels):
     return (mse, mae, mape)
 
 
-def sel_net(sel_train,tau_part_num = 50,partition_option ='huber_log' , loss_option = 'l2'):
+def sel_net(sel_train,dataname, tau_part_num = 50,partition_option ='huber_log' , loss_option = 'l2'):
 
     # for seletivity
     loss_option = 'huber_log'
@@ -331,8 +331,8 @@ def sel_net(sel_train,tau_part_num = 50,partition_option ='huber_log' , loss_opt
     test_data_predictions_labels_file = os.path.join('./test_face_d128_2M_smallSel_huber_log/', 'test_predictions.npy')
     valid_data_predictions_labels_file = os.path.join('./test_face_d128_2M_smallSel_huber_log/', 'valid_predictions_labels_one_epoch_')
 
-    regression_name = 'adult'
-    regression_model_dir = 'pretrained_models/sel'
+    regression_name = dataname
+    regression_model_dir = 'pretrained_models/{}/sel'.format(dataname)
 
 
 

@@ -51,8 +51,8 @@ def parameter_search(Model):
 
 config = { 
         "name": "adult_fd_test",
-		"train": "dataset/train/adult.csv",	
-		"sample": "dataset/train/adult.csv",
+		"train": "dataset/origin/{}.csv".format(sys.argv[1]),	
+		"sample": "dataset/origin/{}.csv".format(sys.argv[1]),
 		"gmm_cols":[],
 		"normalize_cols":[0,2,4,10,11,12],
 		"one-hot_cols":[1,3,5,6,7,8,9,13,14],
@@ -143,7 +143,7 @@ col_ind = trn.col_ind
 
 
 # global data
-sel_train = np.load("dataset/train/adult_converted.npy")
+sel_train = np.load("dataset/train/{}_preprocessed.npy".format(sys.argv[1]))
 
 
 
@@ -167,7 +167,7 @@ steps_per_epoch = None, GPU=False, KL=True, mean = True, fd = False, sel=True, v
         fd_model = tf.keras.models.load_model(model_path + fd)
 
 
-    sel_model = sel_net(sel_train)
+    sel_model = sel_net(sel_train,sys.argv[1])
 
 
     torch.manual_seed(0)

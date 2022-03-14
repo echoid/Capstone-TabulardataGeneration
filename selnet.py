@@ -100,8 +100,8 @@ class SelNet(object):
         self.model_file = model_file
         # check whether model_dir exist, if not mkdir one
         # Here note that model_file is just a dir of model
-        if not os.path.exists(self.model_file):
-            os.makedirs(self.model_file)
+        # if not os.path.exists(self.model_file):
+        #     os.makedirs(self.model_file)
         # prediction time
         self.prediction_time = 0.0
         # define the maximum threshold
@@ -324,6 +324,7 @@ class SelNet(object):
         with tf.compat.v1.Session() as sess:
             #saver.restore(sess,self.model_file)
             #saver = tf.train.import_meta_graph('pretrained_models/sel/sel-119.meta')
+            print("current dir:",self.model_file)
             saver = tf.train.import_meta_graph(tf.train.latest_checkpoint(self.model_file)+".meta")
             #saver.restore(sess, tf.train.latest_checkpoint("pretrained_models/sel"))
             saver.restore(sess,tf.train.latest_checkpoint(self.model_file))
