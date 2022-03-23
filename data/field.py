@@ -91,7 +91,11 @@ class CategoricalField:
 		if self.method == "dict":
 			self.Min = 0
 			self.Max = len(self.vset)-1
-			self.K = 1/(self.Max-self.Min)
+			if (self.Max-self.Min) == 0:
+				self.K = 1
+			else:
+				self.K = 1/(self.Max-self.Min)
+			
 	
 	def get_data(self, data):
 		if self.fitdata is None:
@@ -155,10 +159,12 @@ class CategoricalField:
 		
 		if self.method == "dict":
 			features = features/self.K + self.Min
+
 			features = features + 0.5
 			features = features.astype(int)
 			
 		features = features.reshape(1, -1)
+
 		data = list(map(lambda x: self.rev_dict[x], features[0]))
 		data = np.asarray(data).reshape(-1, 1)
 		

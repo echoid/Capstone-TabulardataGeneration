@@ -50,8 +50,6 @@ def sel_generation(data, queries):
         predict_1 = []
         _query = queries[rid: rid + 1]
 
-        print("datashape:",data.shape)
-        print("queryshape:",_query.shape)
         
         # the distance between each query and database 
         # 每一条query都有30000个result，记录和原始数据的distance
@@ -156,24 +154,26 @@ def KL_Loss(x_fake, x_real, col_type, col_dim):
         end = sta+dim
         fakex = x_fake[:,sta:end]
         realx = x_real[:,sta:end]
+
         if col_type[i] == "gmm":
             fake2 = fakex[:,1:]
             real2 = realx[:,1:]
             # column sum
             dist = torch.sum(fake2, dim=0)
-
             dist = dist / torch.sum(dist)
             real = torch.sum(real2, dim=0)
+
             real = real / torch.sum(real)
+
             kl += compute_kl(real, dist)
         else:
             dist = torch.sum(fakex, dim=0)
             dist = dist / torch.sum(dist)
-            
             real = torch.sum(realx, dim=0)
             real = real / torch.sum(real)
-            
+
             kl += compute_kl(real, dist)
+
     return kl
 
 
@@ -216,81 +216,6 @@ def convert_type(data,columns):
 
 
 
-
-def fd_calculated(df_fake,fd_model,y_fake,model,fd_graph,fd_session):
-    
-    path = "pretrained_models/"
-    # if method == "full":
-    #     model = tf.keras.models.load_model(path + fd_model)
-
-
-    with open(path+"base_acc.json", 'r') as f:
-        acc_dict = json.load(f)
-
-    y_fake = y_fake.cpu().detach().numpy()
-    
-    if fd_model == "strong_num":
-        Input = df_fake[["education-num","capital-gain"]].astype('float32')
-        Output = df_fake["hours-per-week"]
-        with fd_graph.as_default():
-            set_session(fd_session)
-            fd = abs(model.evaluate(Input,y_fake,verbose=False) - acc_dict[fd_model]) # square
-
-        # predicted = model.predict(Input).flatten()
-
-        # fd  = sum(abs(predicted-Output))/y_fake.shape[0]
-
-
-        return fd
-
-    if fd_model == "weak_num":
-        Input = df_fake["education-num"].astype('float32')
-        #Output = df_fake["age"]
-
-        # predicted = model.predict(Input).flatten()
-        # fd  = sum(abs(predicted-Output))/y_fake.shape[0]
-        with fd_graph.as_default():
-            set_session(fd_session)
-            fd = model.evaluate(Input,y_fake,verbose=False)
-
-        return fd
-
-    if fd_model == "strong_cate":
-        ms = pd.get_dummies(df_fake["marital-status"])
-        ms = np.array(pd.DataFrame(ms,columns=['Divorced',
-        'Married-AF-spouse',
-        'Married-civ-spouse',
-        'Married-spouse-absent',
-        'Never-married',
-        'Separated',
-        'Widowed']).fillna(0))
-
-        sex = pd.get_dummies(df_fake["sex"])
-        Input = np.concatenate((np.array(ms),np.array(sex)),axis=1)
-        Output = np.argmax(np.array(pd.get_dummies(df_fake["relationship"])),axis = 1)
-        with fd_graph.as_default():
-            set_session(fd_session)
-            predicted = np.argmax(model.predict(Input),axis = 1)
-        fd = abs(np.sum(Output != predicted)/y_fake.shape[0] - acc_dict[fd_model])
-
-        return fd 
-
-
-    if fd_model == "weak_cate":
-        Input = pd.get_dummies(df_fake["education"])
-        Input = np.array(pd.DataFrame(Input,columns=['10th', '11th', '12th', '1st-4th', '5th-6th', '7th-8th', '9th',
-       'Assoc-acdm', 'Assoc-voc', 'Bachelors', 'Doctorate', 'HS-grad',
-       'Masters', 'Preschool', 'Prof-school', 'Some-college'],dtype='object').fillna(0))
-       
-        Output = np.argmax(np.array(pd.get_dummies(df_fake["occupation"])),axis = 1)
-        with fd_graph.as_default():
-            set_session(fd_session)
-            predicted = np.argmax(model.predict(Input),axis = 1) 
-        fd = abs(np.sum(Output != predicted)- acc_dict[fd_model])
-
-        return fd
-
-
 def eval_(predictions, labels):
     mse = mean_squared_error(labels, predictions)
     mae = mean_absolute_error(labels, predictions)
@@ -298,11 +223,6 @@ def eval_(predictions, labels):
     return (mse, mae, mape)
 
 
-def eval_(predictions, labels):
-    mse = mean_squared_error(labels, predictions)
-    mae = mean_absolute_error(labels, predictions)
-    mape = mean_absolute_percentage_error(labels, predictions)
-    return (mse, mae, mape)
 
 
 def sel_net(sel_train,dataname, tau_part_num = 50,partition_option ='huber_log' , loss_option = 'l2'):
@@ -388,40 +308,6 @@ def sel_loss(x_fake,dataset,sel_train,fields,regressor):
 
     test_Y = np.array(test_data[:, -1], dtype=np.float32)
 
-
-    # unit_len = 100
-    # max_tau = 1 #54.0
-
-    # hidden_units = [512, 512, 512, 256]
-    # vae_hidden_units = [512, 256, 128]
-
-    # batch_size = 512
-    # #epochs = 1500
-    # epochs = 120
-    # epochs_vae = 100
-    # learning_rate = 0.00003
-    # log_option = False
-    # tau_embedding_size = 5
-    # original_x_dim = test_original_X.shape[1]
-    
-    # dimreduce_x_dim = x_reducedim
-
-    # print("test_original_X",test_original_X.shape)
-    # print("test_data.shape",x_dim)
-
-
-    # test_data_predictions_labels_file = os.path.join('./test_face_d128_2M_smallSel_huber_log/', 'test_predictions.npy')
-    # valid_data_predictions_labels_file = os.path.join('./test_face_d128_2M_smallSel_huber_log/', 'valid_predictions_labels_one_epoch_')
-
-    # regression_name = 'adult'
-    # regression_model_dir = 'pretrained_models/sel'
-
-
-
-    # regressor = SelNet(hidden_units, vae_hidden_units, batch_size, epochs, epochs_vae,
-    #                         learning_rate, log_option, tau_embedding_size, original_x_dim, dimreduce_x_dim,
-    #                         test_data_predictions_labels_file, valid_data_predictions_labels_file, regression_name, 
-    #                         regression_model_dir, unit_len, max_tau, tau_part_num, partition_option, loss_option)
 
 
 

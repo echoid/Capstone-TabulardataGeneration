@@ -49,6 +49,24 @@ def parameter_search(Model):
 	return parameters
 
 
+# config = { 
+#         "name": "adult_fd_test",
+# 		"train": "dataset/origin/{}.csv".format(sys.argv[1]),	
+# 		"sample": "dataset/origin/{}.csv".format(sys.argv[1]),
+# 		"gmm_cols":[],
+# 		"normalize_cols":[0,2,4,10,11,12],
+# 		"one-hot_cols":[1,3,5,6,7,8,9,13,14],
+# 		"ordinal_cols":[],
+# 		"model": "VGAN",
+# 		"n_epochs":20,
+# 		"steps_per_epoch":10,
+# 		"n_search": 5,
+# 		"rand_search": "yes",
+# 		"train_method":"VTrain"
+# 	}
+
+
+
 config = { 
         "name": "adult_fd_test",
 		"train": "dataset/origin/{}.csv".format(sys.argv[1]),	

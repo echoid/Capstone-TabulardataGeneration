@@ -75,6 +75,6 @@ train_it= Iterator.split(
 #train_data = np.array(tf.concat([data for data in train_it], axis=0))
 train_data = tf.concat([data for data in train_it], axis=0).eval(session=tf.compat.v1.Session())
 
-np.save(save_path+sys.argv[1]+"_preprocessed.npy",train_data)
+# np.save(save_path+sys.argv[1]+"_preprocessed.npy",train_data)
 
 print("Data converted, new dim: ",train_data.shape)

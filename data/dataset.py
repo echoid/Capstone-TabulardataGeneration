@@ -114,7 +114,6 @@ class Dataset:
 			train_data = None
 		else:
 			train_data = cls(path = os.path.join(path, train), **dataset_args, ratio=train_ratio)
-			print(train_data)
 
 		# datasets = tuple(
 		# 	d for d in (train_data) if d is not None)
@@ -132,6 +131,7 @@ class Dataset:
 			sta = end
 			end += dim
 			sample_columns.append(sample[:,sta:end])
+
 		
 		for i, col in enumerate(self.columns):
 			sample_columns[i] = self.__dict__[col].reverse(sample_columns[i])
