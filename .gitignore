@@ -149,6 +149,7 @@ cython_debug/
 *.csv
 generated/
 pretrained_models/
+*.out
 __pycache__
 # PyCharm
 #  JetBrains specific template is maintained in a separate JetBrains.gitignore that can

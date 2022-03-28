@@ -7,7 +7,7 @@
 #SBATCH -q gpgpudeeplearn
 #SBATCH --gres=gpu:1
 #SBATCH --job-name=ticket_sel_mean
-#SBATCH --time=48:00:00
+#SBATCH --time=150:00:00
 #SBATCH --mail-user=youran@student.unimelb.edu.au
 #SBATCH --mail-type=ALL
 #SBATCH --mem=10G
@@ -23,4 +23,4 @@ module load tqdm/4.41.1
 
 
 python generate.py ticket True True sel_mean
-
+python generate.py ticket False True sel
