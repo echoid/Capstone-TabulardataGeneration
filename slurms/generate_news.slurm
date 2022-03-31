@@ -6,12 +6,12 @@
 #SBATCH -p deeplearn
 #SBATCH -q gpgpudeeplearn
 #SBATCH --gres=gpu:1
-#SBATCH --job-name=news_sel
-#SBATCH --time=90:00:00
+#SBATCH --job-name=n_weight
+#SBATCH --time=150:00:00
 #SBATCH --mail-user=youran@student.unimelb.edu.au
 #SBATCH --mail-type=ALL
 #SBATCH --mem=10G
-#SBATCH --output=outs/news_sel.out
+#SBATCH --output=outs/n_weight.out
 
 module load fosscuda/2019b
 module load python/3.7.4
@@ -24,5 +24,5 @@ module load tqdm/4.41.1
 
 #python generate.py news False False KL
 #python generate.py news True False mean
-#python generate.py news True True sel_mean
-python generate.py news False True sel
+python generate.py news True True sel_mean_w
+python generate.py news False True sel_w

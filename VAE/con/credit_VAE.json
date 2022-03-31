@@ -1,0 +1,11 @@
+{	"name":"credit",
+	"train":"dataset/origin/credit_sample.csv",
+	"batch_size":200,
+	"continuous_cols":[28],
+	"lr":0.001,
+	"epochs":1000,
+	"steps_per_epoch":50,
+	"no_cuda":0,
+	"model_name":"meanstd",
+	"header":1
+}

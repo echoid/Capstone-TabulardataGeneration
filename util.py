@@ -36,6 +36,9 @@ def convert_back(data,converted,columns):
 
 def sel_generation(data, queries):
 
+    print("sel_train data dimension",data.shape)
+    print("query(generated) data dimension",queries.shape)
+
     data_num = data.shape[0]
     x_dim = queries.shape[1]
     predictions = []
@@ -283,6 +286,8 @@ def sel_loss(x_fake,dataset,sel_train,fields,regressor):
 
     #generated_data = np.array(tf.concat([data for data in generated_it], axis=0))
     test_data = sel_generation(sel_train,generated_data)
+    print("sel_train data dimension",sel_train.shape)
+
 
     # print("Test query successfull generated...")
     # #test_data = np.load("dataset/train/adult_converted_sel.npy")

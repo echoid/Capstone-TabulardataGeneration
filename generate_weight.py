@@ -144,16 +144,6 @@ epochs, lr, dataloader, z_dim, dataset,
 col_type, sample_times, itertimes = 100, 
 steps_per_epoch = None, GPU=False, KL=True, mean = True, sel=True, verbose = False):
 
-    # if method != "full":
-
-    #     model_path = "pretrained_models/"
-    #     fd_model = tf.keras.models.load_model(model_path + fd_type)
-    # else:
-    #     fd_model = None
-    if name.endswith("_w"):
-        weighted = True
-
-    
 
     sel_model = sel_net(sel_train,sys.argv[1])
 
@@ -255,10 +245,8 @@ steps_per_epoch = None, GPU=False, KL=True, mean = True, sel=True, verbose = Fal
                     G_KL = 0
 
                 if sel:
-                    G_sel = sel_loss(x_fake,dataset,sel_train,fields,sel_model)
-                    if weighted:
-                        G_sel = 0.1 * G_sel
 
+                    G_sel = 0.1 * sel_loss(x_fake,dataset,sel_train,fields,sel_model)
                 else:
                     G_sel = 0
                 
@@ -309,6 +297,7 @@ steps_per_epoch = None, GPU=False, KL=True, mean = True, sel=True, verbose = Fal
 
 
 def generation(dataname,mean, sel, name):
+    # fd == fd types, strong_cate, strong_num, weak_cate, weak_num
     # path = generated
 
     path = "dataset/generated/{}/{}/".format(dataname,name)
@@ -317,6 +306,9 @@ def generation(dataname,mean, sel, name):
         os.makedirs(path)
     except:
         pass
+
+    print("Selevtive:",boolean_conv(sel))
+    print("Mean:",boolean_conv(mean))
 
     gen = VGAN_generator(param["z_dim"], param["gen_hidden_dim"], x_dim, 
         param["gen_num_layers"], col_type, col_ind, condition=condition,c_dim=c_dim)
@@ -333,6 +325,23 @@ def generation(dataname,mean, sel, name):
 
 
 generation(sys.argv[1],sys.argv[2],sys.argv[3],sys.argv[4])
+# generation("strong_num","full")
+# generation("weak_num","full")
+
+
+# generation("strong_cate","ITS")
+# generation("weak_cate","ITS")
+# generation("strong_num","ITS")
+# generation("weak_num","ITS")
+
+
+
+
+
+
+
+#sel_loss_2()
+#sel_loss()
 
 
 

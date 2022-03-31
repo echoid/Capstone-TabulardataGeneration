@@ -6,12 +6,12 @@
 #SBATCH -p deeplearn
 #SBATCH -q gpgpudeeplearn
 #SBATCH --gres=gpu:1
-#SBATCH --job-name=ticket_sel_mean
+#SBATCH --job-name=t_weight
 #SBATCH --time=150:00:00
 #SBATCH --mail-user=youran@student.unimelb.edu.au
 #SBATCH --mail-type=ALL
 #SBATCH --mem=10G
-#SBATCH --output=outs/ticket_sel_mean.out
+#SBATCH --output=outs/t_weight.out
 
 module load fosscuda/2019b
 module load python/3.7.4
@@ -22,5 +22,5 @@ module load tensorflow/1.15.0-python-3.7.4
 module load tqdm/4.41.1
 
 
-python generate.py ticket True True sel_mean
-python generate.py ticket False True sel
+python generate.py ticket True True sel_mean_w
+python generate.py ticket False True sel_w

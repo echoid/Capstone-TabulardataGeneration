@@ -6,12 +6,12 @@
 #SBATCH -p deeplearn
 #SBATCH -q gpgpudeeplearn
 #SBATCH --gres=gpu:1
-#SBATCH --job-name=credit_generate
-#SBATCH --time=90:00:00
+#SBATCH --job-name=cr_weight
+#SBATCH --time=150:00:00
 #SBATCH --mail-user=youran@student.unimelb.edu.au
 #SBATCH --mail-type=ALL
 #SBATCH --mem=10G
-#SBATCH --output=outs/credit_generate.out
+#SBATCH --output=outs/cr_weight.out
 
 module load fosscuda/2019b
 module load python/3.7.4
@@ -22,7 +22,7 @@ module load tensorflow/1.15.0-python-3.7.4
 module load tqdm/4.41.1
 
 
-python generate.py credit False False KL
-python generate.py credit True False mean
-python generate.py credit True True sel_mean
-python generate.py necreditws False True sel
+# python generate.py credit False False KL
+# python generate.py credit True False mean
+python generate.py credit True True sel_mean_w
+python generate.py credit False True sel_w
