@@ -24,5 +24,4 @@ module load tqdm/4.41.1
 
 # python generate.py covertype False False KL
 # python generate.py covertype True False mean
-python generate.py covertype True True sel_mean_w
-python generate.py covertype False True sel_w
+python generate.py covertype True True test
