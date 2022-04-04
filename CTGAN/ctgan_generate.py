@@ -46,4 +46,4 @@ ctgan.fit(data, discrete_columns)
 # Synthetic copy
 samples = ctgan.sample(data.shape[0])
 
-samples.to_csv(generated_path + "ctgan_" + sys.argv[2] + ".csv")
+samples.to_csv(generated_path + "ctgan_" + sys.argv[2] + ".csv",index=False)

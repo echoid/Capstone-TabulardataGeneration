@@ -1,6 +1,5 @@
 from scipy.spatial import distance
 from tqdm import tqdm
-from data import NumericalField, CategoricalField, Iterator,Dataset
 import pandas as pd
 import pandas as pd
 import torch
@@ -261,60 +260,60 @@ def sel_net(sel_train,dataname, tau_part_num = 50,partition_option ='huber_log' 
 
 
 
-def sel_loss(x_fake,dataset,sel_train,fields,regressor):
-#def sel_loss():
-    df_fake = to_df(x_fake,dataset)
-    generated = Dataset(
-        fields = fields,
-        path = None,
-        DataFrame = df_fake,
-        format = "df")
-    generated.learn_convert()
-    generated_it = Iterator.split(
-            batch_size = 128,
-            train = generated)[0]
+# def sel_loss(x_fake,dataset,sel_train,fields,regressor):
+# #def sel_loss():
+#     df_fake = to_df(x_fake,dataset)
+#     generated = Dataset(
+#         fields = fields,
+#         path = None,
+#         DataFrame = df_fake,
+#         format = "df")
+#     generated.learn_convert()
+#     generated_it = Iterator.split(
+#             batch_size = 128,
+#             train = generated)[0]
 
-    generated_data = tf.concat([data for data in generated_it], axis=0)
-    generated_data = generated_data.eval(session=tf.compat.v1.Session())
+#     generated_data = tf.concat([data for data in generated_it], axis=0)
+#     generated_data = generated_data.eval(session=tf.compat.v1.Session())
 
-    #generated_data = np.array(tf.concat([data for data in generated_it], axis=0))
-    test_data = sel_generation(sel_train,generated_data)
-    print("sel_train data dimension",sel_train.shape)
-
-
-    # print("Test query successfull generated...")
-    # #test_data = np.load("dataset/train/adult_converted_sel.npy")
+#     #generated_data = np.array(tf.concat([data for data in generated_it], axis=0))
+#     test_data = sel_generation(sel_train,generated_data)
+#     print("sel_train data dimension",sel_train.shape)
 
 
-    x_dim = test_data.shape[1]-2
-    x_reducedim = x_dim
+#     # print("Test query successfull generated...")
+#     # #test_data = np.load("dataset/train/adult_converted_sel.npy")
 
 
-
-    tau_part_num = 50
-
-    test_original_X = np.array(test_data[:, :x_dim], dtype=np.float32)
-    test_tau_ = []
-    for rid in range(test_data.shape[0]):
-        t = test_data[rid, x_dim] #hm_to_l2(test_data[rid, x_dim])
-        test_tau_.append(t)
-
-    test_tau_ = np.array(test_tau_)
-    test_tau = np.zeros((test_data.shape[0], tau_part_num))
-    for cid in range(tau_part_num):
-        test_tau[:, cid] = test_tau_
-
-    test_Y = np.array(test_data[:, -1], dtype=np.float32)
+#     x_dim = test_data.shape[1]-2
+#     x_reducedim = x_dim
 
 
 
+#     tau_part_num = 50
 
-    predictions = regressor.predict_vae_dnn(test_original_X, test_tau)
+#     test_original_X = np.array(test_data[:, :x_dim], dtype=np.float32)
+#     test_tau_ = []
+#     for rid in range(test_data.shape[0]):
+#         t = test_data[rid, x_dim] #hm_to_l2(test_data[rid, x_dim])
+#         test_tau_.append(t)
 
-    predictions = np.array(predictions)
+#     test_tau_ = np.array(test_tau_)
+#     test_tau = np.zeros((test_data.shape[0], tau_part_num))
+#     for cid in range(tau_part_num):
+#         test_tau[:, cid] = test_tau_
+
+#     test_Y = np.array(test_data[:, -1], dtype=np.float32)
 
 
-    # evaluation
-    evaluation = eval_(predictions, test_Y)
 
-    return evaluation[1]
+
+#     predictions = regressor.predict_vae_dnn(test_original_X, test_tau)
+
+#     predictions = np.array(predictions)
+
+
+#     # evaluation
+#     evaluation = eval_(predictions, test_Y)
+
+#     return evaluation[1]

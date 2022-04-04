@@ -147,8 +147,8 @@ cython_debug/
 .history/
 *.npy
 *.csv
-generated/
 pretrained_models/
+pretrained/
 *.out
 __pycache__
 # PyCharm
