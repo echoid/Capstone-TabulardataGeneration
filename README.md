@@ -38,23 +38,27 @@ pytorch/1.9.0-python-3.8.6
 ### Data transformation
 
 
+```
 python selgan/data_transformer.py [filename from dataset/origin]
 python selgan/data_transformer.py adult
+```
 
 
 ### Pre-trained Sel model
 
+```
 python selgan/pretrain_selnet.py [filename from dataset/origin]
 python selgan/pretrain_selnet.py adult
+```
 
 ### Generate
 
+```
 python selgan/selgan_generate.py [filename from dataset/origin] [# Epoches] [path/name]
 python selgan/selgan_generate.py adult 300 sel_gan
-
+```
 
 ### Spartan slurm
-
 
 ```
 #! /bin/bash
