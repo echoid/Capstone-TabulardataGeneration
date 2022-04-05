@@ -43,7 +43,8 @@ def sel_generation(data, queries):
     # generate 40 nodes
 
     # total number of instances(queries)
-    for rid in tqdm(range(queries.shape[0])):
+    #for rid in tqdm(range(queries.shape[0])):
+    for rid in range(queries.shape[0]):
         
         predict = []
         predict_1 = []
@@ -85,7 +86,7 @@ def sel_generation(data, queries):
 
     selected_tau = 3
 
-    for rid in tqdm(range(queries.shape[0])):
+    for rid in range(queries.shape[0]):
         # loop each data 
         r_ = queries[rid]
         # instance
@@ -122,16 +123,48 @@ def sel_generation(data, queries):
     return data_mixlabels
 
 
+def cal_sel_loss(train, test, selnet):
+
+    test_query = sel_generation(train, test)
+
+    x_dim = test_query.shape[1]-2
+
+    x_reducedim = x_dim
 
 
 
-def to_df(data,dataset):
-    samples = data.reshape(data.shape[0], -1)
-    samples = samples[:,:dataset.dim]
-    samples = samples.cpu()
-    sample_table = dataset.reverse(samples.detach().numpy())
-    df = pd.DataFrame(sample_table,columns=dataset.columns)
-    return df
+    tau_part_num = 50
+
+    test_original_X = np.array(test_query[:, :x_dim], dtype=np.float32)
+    test_tau_ = []
+    for rid in range(test_query.shape[0]):
+        t = test_query[rid, x_dim] #hm_to_l2(test_data[rid, x_dim])
+        test_tau_.append(t)
+
+    test_tau_ = np.array(test_tau_)
+    test_tau = np.zeros((test_query.shape[0], tau_part_num))
+    for cid in range(tau_part_num):
+        test_tau[:, cid] = test_tau_
+
+    test_Y = np.array(test_query[:, -1], dtype=np.float32)
+
+
+
+
+    predictions = selnet.predict_vae_dnn(test_original_X, test_tau)
+
+    predictions = np.array(predictions)
+
+
+    # evaluation
+    evaluation = eval_(predictions, test_Y)
+
+    return evaluation[1]
+
+
+
+
+
 
 
 
@@ -243,9 +276,6 @@ def sel_net(sel_train,dataname, tau_part_num = 50,partition_option ='huber_log' 
 
 
 
-    test_data_predictions_labels_file = os.path.join('./test_face_d128_2M_smallSel_huber_log/', 'test_predictions.npy')
-    valid_data_predictions_labels_file = os.path.join('./test_face_d128_2M_smallSel_huber_log/', 'valid_predictions_labels_one_epoch_')
-
     regression_name = dataname
     regression_model_dir = 'pretrained_models/{}/sel'.format(dataname)
 
@@ -253,10 +283,47 @@ def sel_net(sel_train,dataname, tau_part_num = 50,partition_option ='huber_log' 
 
     regressor = SelNet(hidden_units, vae_hidden_units, batch_size, epochs, epochs_vae,
                             learning_rate, log_option, tau_embedding_size, original_x_dim, dimreduce_x_dim,
-                            test_data_predictions_labels_file, valid_data_predictions_labels_file, regression_name, 
-                            regression_model_dir, unit_len, max_tau, tau_part_num, partition_option, loss_option)
+                            regression_name, regression_model_dir, unit_len, max_tau, tau_part_num, partition_option, loss_option)
 
     return regressor
+
+
+
+def load_sel(sel_train,dataname, tau_part_num = 50,partition_option ='huber_log' , loss_option = 'l2'):
+
+    # for seletivity
+    loss_option = 'huber_log'
+    partition_option = 'l2'
+    unit_len = 100
+    max_tau = 1 #54.0
+
+    hidden_units = [512, 512, 512, 256]
+    vae_hidden_units = [512, 256, 128]
+
+    batch_size = 512
+    #epochs = 1500
+    epochs = 120
+    epochs_vae = 100
+    learning_rate = 0.00003
+    log_option = False
+    tau_embedding_size = 5
+    original_x_dim = sel_train.shape[1]
+    dimreduce_x_dim = original_x_dim
+
+
+    regression_name = dataname
+
+    regression_model_dir = 'pretrained/{}/sel'.format(dataname)
+
+
+
+    regressor = SelNet(hidden_units, vae_hidden_units, batch_size, epochs, epochs_vae,
+                            learning_rate, log_option, tau_embedding_size, original_x_dim, dimreduce_x_dim,
+                            regression_name,regression_model_dir, unit_len, max_tau, tau_part_num, partition_option, loss_option)
+
+    return regressor
+
+
 
 
 

@@ -11,7 +11,7 @@
 #SBATCH --mail-user=youran@student.unimelb.edu.au
 #SBATCH --mail-type=ALL
 #SBATCH --mem=10G
-#SBATCH --output=outs/sel_pretrain.out
+#SBATCH --output=outs/sel_pretrain_adult.out
 
 # module load fosscuda/2019b
 # module load python/3.7.4
@@ -27,9 +27,9 @@ module load pytorch/1.5.1-python-3.7.4
 module load tqdm/4.41.1
 
 python selgan/pretrain_selnet.py adult
-python selgan/pretrain_selnet.py covertype
-python selgan/pretrain_selnet.py credit
-python selgan/pretrain_selnet.py news
-python selgan/pretrain_selnet.py ticket2
-python selgan/pretrain_selnet.py ticket
+# python selgan/pretrain_selnet.py covertype
+# python selgan/pretrain_selnet.py credit
+# python selgan/pretrain_selnet.py news
+# python selgan/pretrain_selnet.py ticket2
+# python selgan/pretrain_selnet.py ticket
 

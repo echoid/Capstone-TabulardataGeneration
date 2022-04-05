@@ -1,5 +1,4 @@
 from ctgan import CTGANSynthesizer
-from ctgan import load_demo
 import pandas as pd
 import os
 import sys
@@ -13,14 +12,14 @@ data = pd.read_csv(path + "origin/"+ dataname + ".csv")
 with open(path +"configeration/" +sys.argv[1]+"_config.json", 'r') as f:
   config = json.load(f)
 
-generated_path = path + "generated/" + dataname + "/ctgan/"
+generated_path = path + "generated/" + dataname + "/selgan/"
 try:
         os.makedirs(generated_path)
 except:
     pass
 
 
-discrete_columns = data.columns[config["one-hot_cols"] + config["ordinal_cols"]].tolist()
+discrete_columns = data.columns[config["one-hot_cols"]].tolist()
 
 
 
@@ -39,11 +38,12 @@ discrete_columns = data.columns[config["one-hot_cols"] + config["ordinal_cols"]]
 #     'income'
 # ]
 
-ctgan = CTGANSynthesizer(epochs=int(sys.argv[2]))
+selgan = CTGANSynthesizer(epochs=int(sys.argv[2]),verbose=True,selnet="adult")
 
-ctgan.fit(data, discrete_columns)
+selgan.fit(data, discrete_columns,log = generated_path)
+selgan.save(generated_path + "selgan_{}_{}.pkl".format(sys.argv[2],sys.argv[3]))
 
 # Synthetic copy
-samples = ctgan.sample(data.shape[0])
+samples = selgan.sample(data.shape[0])
 
-samples.to_csv(generated_path + "ctgan_less_" + sys.argv[2] + ".csv",index=False)
+samples.to_csv(generated_path + "selgan_{}_{}.csv".format(sys.argv[2],sys.argv[3]),index=False)

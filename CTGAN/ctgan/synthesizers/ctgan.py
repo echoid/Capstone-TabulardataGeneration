@@ -338,7 +338,8 @@ class CTGANSynthesizer(BaseSynthesizer):
         mean = torch.zeros(self._batch_size, self._embedding_dim, device=self._device)
         std = mean + 1
 
-        steps_per_epoch = max(len(train_data) // self._batch_size, 1)
+        #steps_per_epoch = max(len(train_data) // self._batch_size, 1)
+        steps_per_epoch = 10
         for i in tqdm(range(epochs)):
             for id_ in range(steps_per_epoch):
 
