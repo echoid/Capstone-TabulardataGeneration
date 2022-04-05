@@ -8,16 +8,88 @@ Daisy: https://github.com/ruclty/Daisy
 
 Selnet: https://github.com/ppo2020/SIGMOD2021ID73 (tf:1.x)
 
+CTGAN: https://github.com/sdv-dev/CTGAN
+
 ## Data:
 Adult: https://github.com/ruclty/Daisy/blob/master/dataset/adult_train.csv
+Adult: http://archive.ics.uci.edu/ml/datasets/adult
+Covertype: http://archive.ics.uci.edu/ml/datasets/covertype
+Ticket: https://www.transtats.bts.gov/DataIndex.asp. From tablegan
+News: https://archive.ics.uci.edu/ml/datasets/online+news+popularity
+Credit: https://www.kaggle.com/mlg-ulb/creditcardfraud
+
 
 
 ## envir
-python 3.7.4
-tensorflow 1.15
-pytorch 1.10
+For selnet, daisy, VAE
+python/3.7.4 
+tensorflow/1.15
+pytorch/1.10
+
+For sel-gan, ctgan, octgan(haven't test)
+python/3.8.6
+tensorflow/2.6.0-python-3.8.6
+pytorch/1.9.0-python-3.8.6
 
 ## How to Run
+
+## Version 3
+
+### Data transformation
+
+
+python selgan/data_transformer.py [filename from dataset/origin]
+python selgan/data_transformer.py adult
+
+
+### Pre-trained Sel model
+
+python selgan/pretrain_selnet.py [filename from dataset/origin]
+python selgan/pretrain_selnet.py adult
+
+### Generate
+
+python selgan/selgan_generate.py [filename from dataset/origin] [# Epoches] [path/name]
+python selgan/selgan_generate.py adult 300 sel_gan
+
+
+### Spartan slurm
+
+
+```
+#! /bin/bash
+
+#SBATCH -p deeplearn
+#SBATCH -q gpgpudeeplearn
+#SBATCH --gres=gpu:1
+#SBATCH --job-name=sel-news
+#SBATCH --time=150:00:00
+#SBATCH --mail-user=youran@student.unimelb.edu.au
+#SBATCH --mail-type=ALL
+#SBATCH --mem=30G
+#SBATCH --output=outs/selgan_news_300.out
+
+# module load fosscuda/2019b
+# module load python/3.7.4
+
+
+
+module load fosscuda/2020b 
+module load python/3.8.6
+module load tensorflow/2.6.0-python-3.8.6
+module load pytorch/1.9.0-python-3.8.6
+module load torchvision/0.10.0-python-3.8.6-pytorch-1.9.0
+module load tqdm/4.60.0
+module load scipy-bundle/2020.11
+
+python selgan/selgan_generate.py news 300 sel_gan
+
+```
+
+
+
+=================================================================================
+## Version 2
 
 ### Data preprocess
 
@@ -98,8 +170,10 @@ python onlysel.py Adult False False True only_sel
 ```
 
 
-Old instructions
+
 ===================================================================================================
+## Version 1
+
 ### To run this model (Adult example) 
 
 (Fixed, tf 1.0 will work.)
