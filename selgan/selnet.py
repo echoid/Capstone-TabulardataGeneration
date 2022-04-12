@@ -131,29 +131,29 @@ class SelNet(object):
         :return:
         '''
         # Encoder
-        fc1 = tf.layers.dense(inputs=x_input, units=self.vae_hidden_units[0],
+        fc1 = tf.compat.v1.layers.dense(inputs=x_input, units=self.vae_hidden_units[0],
                               activation=tf.nn.elu, name=self.regressor_name + 'vae_fc_e1')
-        fc2 = tf.layers.dense(inputs=fc1, units=self.vae_hidden_units[1],
+        fc2 = tf.compat.v1.layers.dense(inputs=fc1, units=self.vae_hidden_units[1],
                               activation=tf.nn.elu, name=self.regressor_name + 'vae_fc_e2')
-        fc3 = tf.layers.dense(inputs=fc2, units=self.vae_hidden_units[2],
+        fc3 = tf.compat.v1.layers.dense(inputs=fc2, units=self.vae_hidden_units[2],
                               activation=tf.nn.elu, name=self.regressor_name + 'vae_fc_e3')
 
         # generate hidden layer z
-        z_mu = tf.layers.dense(inputs=fc3, units=self._vae_n_z, 
+        z_mu = tf.compat.v1.layers.dense(inputs=fc3, units=self._vae_n_z, 
                             activation=None, name=self.regressor_name + 'vae_fc_e4')
 
         # hidden layer
         hidden_z = z_mu #+ tf.sqrt(tf.exp(z_log_sigma_sq)) * eps
 
         # Decoder
-        g1 = tf.layers.dense(inputs=hidden_z, units=self.vae_hidden_units[2],
+        g1 = tf.compat.v1.layers.dense(inputs=hidden_z, units=self.vae_hidden_units[2],
                              activation=tf.nn.elu, name=self.regressor_name + 'vae_fc_d1')
-        g2 = tf.layers.dense(inputs=g1, units=self.vae_hidden_units[1],
+        g2 = tf.compat.v1.layers.dense(inputs=g1, units=self.vae_hidden_units[1],
                              activation=tf.nn.elu, name=self.regressor_name + 'vae_fc_d2')
-        g3 = tf.layers.dense(inputs=g2, units=self.vae_hidden_units[0],
+        g3 = tf.compat.v1.layers.dense(inputs=g2, units=self.vae_hidden_units[0],
                              activation=tf.nn.elu, name=self.regressor_name + 'vae_fc_d3')
 
-        x_hat = tf.layers.dense(inputs=g3, units=self.original_x_dim,
+        x_hat = tf.compat.v1.layers.dense(inputs=g3, units=self.original_x_dim,
                                 activation=tf.nn.relu)
 
         recon_loss = tf.losses.mean_squared_error(predictions=x_hat, labels=x_input)
@@ -178,11 +178,11 @@ class SelNet(object):
 
         rhos = []
         # fc layers
-        out = tf.layers.dense(inputs=new_x_fea, units=self.hidden_units[0],
+        out = tf.compat.v1.layers.dense(inputs=new_x_fea, units=self.hidden_units[0],
                               activation=tf.nn.relu, name=self.regressor_name + 'fc_1')
 
         # 1st embedding
-        rho_1 = tf.layers.dense(inputs=out, units=self.hidden_unit_len * (self.tau_part_num + 1),
+        rho_1 = tf.compat.v1.layers.dense(inputs=out, units=self.hidden_unit_len * (self.tau_part_num + 1),
                             activation=tf.nn.relu, name=self.regressor_name + 'embed_1')
 
         # reshape 1st embedding
@@ -190,11 +190,11 @@ class SelNet(object):
 
         rhos.append(rho_1)
 
-        out = tf.layers.dense(inputs=out, units=self.hidden_units[1],
+        out = tf.compat.v1.layers.dense(inputs=out, units=self.hidden_units[1],
                               activation=tf.nn.relu, name=self.regressor_name + 'fc_2')
 
         # 2nd embedding
-        rho_2 = tf.layers.dense(inputs=out, units=self.hidden_unit_len * (self.tau_part_num + 1),
+        rho_2 = tf.compat.v1.layers.dense(inputs=out, units=self.hidden_unit_len * (self.tau_part_num + 1),
                             activation=tf.nn.relu, name=self.regressor_name + 'embed_2')
 
         # reshape 2nd embedding
@@ -202,12 +202,12 @@ class SelNet(object):
 
         rhos.append(rho_2)
 
-        out = tf.layers.dense(inputs=out, units=self.hidden_units[2],
+        out = tf.compat.v1.layers.dense(inputs=out, units=self.hidden_units[2],
                               activation=tf.nn.relu, name=self.regressor_name + 'fc_3')
         # out = tf.nn.dropout(out, keep_prob=self.keep_prob, name=self.regressor_name + 'dropout')
 
         # 3rd embedding
-        rho_3 = tf.layers.dense(inputs=out, units=self.hidden_unit_len * (self.tau_part_num + 1),
+        rho_3 = tf.compat.v1.layers.dense(inputs=out, units=self.hidden_unit_len * (self.tau_part_num + 1),
                             activation=tf.nn.relu, name=self.regressor_name + 'embed_3')
 
         # reshape 3rd embedding
@@ -215,11 +215,11 @@ class SelNet(object):
 
         rhos.append(rho_3)
 
-        out = tf.layers.dense(inputs=out, units=self.hidden_units[3],
+        out = tf.compat.v1.layers.dense(inputs=out, units=self.hidden_units[3],
                               activation=tf.nn.relu, name=self.regressor_name + 'fc_4')
         
         # 4th embedding
-        rho_4 = tf.layers.dense(inputs=out, units=self.hidden_unit_len * (self.tau_part_num + 1),
+        rho_4 = tf.compat.v1.layers.dense(inputs=out, units=self.hidden_unit_len * (self.tau_part_num + 1),
                             activation=tf.nn.relu, name=self.regressor_name + 'embed_4')
 
         # reshape 3rd embedding
@@ -238,12 +238,12 @@ class SelNet(object):
     def _partition_threshold(self, x_fea, x_fea_dr, tau, eps=0.0000001):
         # first concat X
         new_x = tf.concat([x_fea, x_fea_dr], 1)
-        out = tf.layers.dense(inputs=new_x, units=self.hidden_units[0], activation=tf.nn.elu,
+        out = tf.compat.v1.layers.dense(inputs=new_x, units=self.hidden_units[0], activation=tf.nn.elu,
                               name=self.regressor_name + 'tau_part_1')
-        out = tf.layers.dense(inputs=out, units=self.hidden_units[1], activation=tf.nn.elu,
+        out = tf.compat.v1.layers.dense(inputs=out, units=self.hidden_units[1], activation=tf.nn.elu,
                               name=self.regressor_name + 'tau_part_2')
 
-        out = tf.layers.dense(inputs=out, units=self.tau_part_num, activation=tf.nn.elu,
+        out = tf.compat.v1.layers.dense(inputs=out, units=self.tau_part_num, activation=tf.nn.elu,
                               name=self.regressor_name + 'tau_part_3')
 
         if self.partition_option == 'softmax':
@@ -302,7 +302,7 @@ class SelNet(object):
     def predict_vae_dnn(self, test_X, test_tau):
         ''' Prediction
         '''
-        tf.disable_eager_execution()
+        #tf.disable_eager_execution()
         tf.reset_default_graph()
         x_input = tf.placeholder(dtype=tf.float32, shape=[None, self.original_x_dim], name=self.regressor_name + 'original_X')
 
@@ -326,7 +326,6 @@ class SelNet(object):
         with tf.Session() as sess:
             #saver.restore(sess,self.model_file)
             #saver = tf.train.import_meta_graph('pretrained_models/sel/sel-119.meta')
-            print("current dir:",self.model_file)
             saver = tf.train.import_meta_graph(tf.train.latest_checkpoint(self.model_file)+".meta")
             #saver.restore(sess, tf.train.latest_checkpoint("pretrained_models/sel"))
             saver.restore(sess,tf.train.latest_checkpoint(self.model_file))

@@ -13,6 +13,7 @@
 #SBATCH --mem=10G
 #SBATCH --output=outs/news_KL.out
 
+
 module load fosscuda/2019b
 module load python/3.7.4
 module load scipy-bundle/2019.10-python-3.7.4
@@ -22,4 +23,5 @@ module load tensorflow/1.15.0-python-3.7.4
 module load tqdm/4.41.1
 
 
-python generate.py news False False KL
+
+python generate.py adult False False test

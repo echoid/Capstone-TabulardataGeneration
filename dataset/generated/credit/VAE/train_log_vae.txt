@@ -1442,4 +1442,17 @@ VAE iteration 0 	 ELBO Loss 1.4516 	 MSE Reconstruct Loss 0.7575	 BCE Reconstruc
 VAE iteration 0 	 ELBO Loss 1.4413 	 MSE Reconstruct Loss 0.7481	 BCE Reconstruct Loss 0.6137	 KL Loss 0.1590----------pretrain Epoch 984:----------
 VAE iteration 0 	 ELBO Loss 1.4454 	 MSE Reconstruct Loss 0.7560	 BCE Reconstruct Loss 0.6137	 KL Loss 0.1514----------pretrain Epoch 985:----------
 VAE iteration 0 	 ELBO Loss 1.4513 	 MSE Reconstruct Loss 0.7562	 BCE Reconstruct Loss 0.6138	 KL Loss 0.1627----------pretrain Epoch 986:----------
-VAE iteration 0 	 ELBO Loss 1.4574 	 MSE Reconstruct Loss 0.7659	 BCE Reconstruct Loss 0.6138	 KL Loss 0.1555
+VAE iteration 0 	 ELBO Loss 1.4574 	 MSE Reconstruct Loss 0.7659	 BCE Reconstruct Loss 0.6138	 KL Loss 0.1555----------pretrain Epoch 987:----------
+VAE iteration 0 	 ELBO Loss 1.4491 	 MSE Reconstruct Loss 0.7551	 BCE Reconstruct Loss 0.6138	 KL Loss 0.1604----------pretrain Epoch 988:----------
+VAE iteration 0 	 ELBO Loss 1.4501 	 MSE Reconstruct Loss 0.7524	 BCE Reconstruct Loss 0.6137	 KL Loss 0.1678----------pretrain Epoch 989:----------
+VAE iteration 0 	 ELBO Loss 1.4449 	 MSE Reconstruct Loss 0.7468	 BCE Reconstruct Loss 0.6137	 KL Loss 0.1688----------pretrain Epoch 990:----------
+VAE iteration 0 	 ELBO Loss 1.4483 	 MSE Reconstruct Loss 0.7539	 BCE Reconstruct Loss 0.6138	 KL Loss 0.1612----------pretrain Epoch 991:----------
+VAE iteration 0 	 ELBO Loss 1.4428 	 MSE Reconstruct Loss 0.7492	 BCE Reconstruct Loss 0.6137	 KL Loss 0.1598----------pretrain Epoch 992:----------
+VAE iteration 0 	 ELBO Loss 1.4463 	 MSE Reconstruct Loss 0.7506	 BCE Reconstruct Loss 0.6137	 KL Loss 0.1639----------pretrain Epoch 993:----------
+VAE iteration 0 	 ELBO Loss 1.4422 	 MSE Reconstruct Loss 0.7479	 BCE Reconstruct Loss 0.6138	 KL Loss 0.1611----------pretrain Epoch 994:----------
+VAE iteration 0 	 ELBO Loss 1.4488 	 MSE Reconstruct Loss 0.7541	 BCE Reconstruct Loss 0.6138	 KL Loss 0.1618----------pretrain Epoch 995:----------
+VAE iteration 0 	 ELBO Loss 1.4375 	 MSE Reconstruct Loss 0.7474	 BCE Reconstruct Loss 0.6137	 KL Loss 0.1528----------pretrain Epoch 996:----------
+VAE iteration 0 	 ELBO Loss 1.4467 	 MSE Reconstruct Loss 0.7553	 BCE Reconstruct Loss 0.6138	 KL Loss 0.1552----------pretrain Epoch 997:----------
+VAE iteration 0 	 ELBO Loss 1.4477 	 MSE Reconstruct Loss 0.7463	 BCE Reconstruct Loss 0.6137	 KL Loss 0.1752----------pretrain Epoch 998:----------
+VAE iteration 0 	 ELBO Loss 1.4404 	 MSE Reconstruct Loss 0.7462	 BCE Reconstruct Loss 0.6137	 KL Loss 0.1609----------pretrain Epoch 999:----------
+VAE iteration 0 	 ELBO Loss 1.4409 	 MSE Reconstruct Loss 0.7468	 BCE Reconstruct Loss 0.6138	 KL Loss 0.1607

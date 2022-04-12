@@ -3,7 +3,7 @@ from tqdm import tqdm
 import pandas as pd
 import torch
 import numpy as np
-from selnet import *
+from selgan.selnet import *
 import json
 import tensorflow as tf
 from tensorflow.python.keras.backend import set_session
@@ -262,7 +262,6 @@ def query_generation(data, queries):
 
         # 从40里选3个tau
         sc_ = np.random.choice(tau_max_per_record, selected_tau, replace=False)
-        print(sc_)
         # 找到最大的tau
         t_max_script = np.max(sc_)
 

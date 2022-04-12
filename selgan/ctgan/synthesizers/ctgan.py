@@ -165,6 +165,7 @@ class CTGANSynthesizer(BaseSynthesizer):
         self._epochs = epochs
         self.pac = pac
         self._selnet = selnet
+        print("selnet:",selnet)
 
 
         if not cuda or not torch.cuda.is_available():
@@ -311,6 +312,7 @@ class CTGANSynthesizer(BaseSynthesizer):
         self._train_data = self._transformer.transform(train_data)
 
         if self._selnet:
+            #print("self._selnet :",self._selnet)
             self._selnet = load_sel(self._train_data, self._selnet)
 
         train_data = self._transformer.transform(train_data)
@@ -414,6 +416,8 @@ class CTGANSynthesizer(BaseSynthesizer):
                     y_fake = discriminator(torch.cat([fakeact, c1], dim=1))
                 else:
                     y_fake = discriminator(fakeact)
+                
+                origin_loss = -torch.mean(y_fake)
 
                 if condvec is None:
                     cross_entropy = 0
@@ -421,12 +425,19 @@ class CTGANSynthesizer(BaseSynthesizer):
                     cross_entropy = self._cond_loss(fake, c1, m1)
                 
                 if self._selnet:
-                    sel_loss = cal_sel_loss(self._train_data, fakeact.detach().cpu(), self._selnet)
+                    sel_loss = 0.01 * cal_sel_loss(self._train_data, fakeact.detach().cpu(), self._selnet)
 
                 else:
                     sel_loss = 0
 
-                loss_g = -torch.mean(y_fake) + cross_entropy + 0.1 * sel_loss
+                loss_g = origin_loss + cross_entropy + sel_loss
+
+                if log:
+                    train_log = open(log+"train_log"+".txt","a+")
+                    train_log.write(f"{i+1},{id_},{loss_g.detach().cpu(): .4f},{origin_loss.detach().cpu(): .4f}, {sel_loss: .4f},{cross_entropy: .4f},{loss_d.detach().cpu(): .4f},\n"
+                                    )
+                    train_log.close()
+
 
                 optimizerG.zero_grad()
                 loss_g.backward()
@@ -436,10 +447,7 @@ class CTGANSynthesizer(BaseSynthesizer):
                 print(f'Epoch {i+1}, Loss G: {loss_g.detach().cpu(): .4f},'  # noqa: T001
                       f'Loss D: {loss_d.detach().cpu(): .4f}',
                       flush=True)
-            if log:
-                train_log = open(log+"train_log"+".txt","a+")
-                train_log.write(f"{i+1},{loss_g.detach().cpu(): .4f},{loss_d.detach().cpu(): .4f}\n")
-                train_log.close()
+
 
     @random_state
     def sample(self, n, condition_column=None, condition_value=None):

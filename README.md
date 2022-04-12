@@ -12,24 +12,33 @@ CTGAN: https://github.com/sdv-dev/CTGAN
 
 ## Data:
 Adult: https://github.com/ruclty/Daisy/blob/master/dataset/adult_train.csv
+
 Adult: http://archive.ics.uci.edu/ml/datasets/adult
+
 Covertype: http://archive.ics.uci.edu/ml/datasets/covertype
+
 Ticket: https://www.transtats.bts.gov/DataIndex.asp. From tablegan
+
 News: https://archive.ics.uci.edu/ml/datasets/online+news+popularity
+
 Credit: https://www.kaggle.com/mlg-ulb/creditcardfraud
 
 
 
 ## envir
 For selnet, daisy, VAE
+```
 python/3.7.4 
 tensorflow/1.15
 pytorch/1.10
+```
 
 For sel-gan, ctgan, octgan(haven't test)
+```
 python/3.8.6
 tensorflow/2.6.0-python-3.8.6
 pytorch/1.9.0-python-3.8.6
+```
 
 ## How to Run
 

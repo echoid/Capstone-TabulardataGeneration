@@ -38,12 +38,16 @@ discrete_columns = data.columns[config["one-hot_cols"]].tolist()
 #     'income'
 # ]
 
-selgan = CTGANSynthesizer(epochs=int(sys.argv[2]),verbose=True,selnet="adult")
+selgan = CTGANSynthesizer(epochs=int(sys.argv[2]),verbose=True,selnet= sys.argv[1])
 
 selgan.fit(data, discrete_columns,log = generated_path)
-selgan.save(generated_path + "selgan_{}_{}.pkl".format(sys.argv[2],sys.argv[3]))
+
 
 # Synthetic copy
 samples = selgan.sample(data.shape[0])
 
 samples.to_csv(generated_path + "selgan_{}_{}.csv".format(sys.argv[2],sys.argv[3]),index=False)
+
+
+#selgan.save(generated_path + "selgan_{}_{}.pkl".format(sys.argv[2],sys.argv[3]))
+# SVD fail to save

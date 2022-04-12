@@ -155,7 +155,7 @@ steps_per_epoch = None, GPU=False, KL=True, mean = True, sel=True, verbose = Fal
 
     
 
-    sel_model = sel_net(sel_train,sys.argv[1])
+    #sel_model = sel_net(sel_train,sys.argv[1])
 
 
     torch.manual_seed(0)

@@ -1,8 +1,6 @@
 import sys
 import numpy as np
-#import tensorflow as tf
 import tensorflow.compat.v1 as tf
-tf.disable_v2_behavior()
 import math
 import os
 import pickle
@@ -76,8 +74,8 @@ class SelNet(object):
                 tau_embedding_size,
                 original_x_dim,
                 dimreduce_x_dim,
-                # test_data_predictions_labels_file,
-                # valid_data_predictions_labels_file,
+                test_data_predictions_labels_file,
+                valid_data_predictions_labels_file,
                 regressor_name,
                 model_file,
                 unit_len,
@@ -95,8 +93,8 @@ class SelNet(object):
         self.original_x_dim = original_x_dim
         self.dimreduce_x_dim = dimreduce_x_dim
         self._vae_n_z = dimreduce_x_dim
-        # self.test_data_predictions_labels_file = test_data_predictions_labels_file
-        # self.valid_data_predictions_labels_file = valid_data_predictions_labels_file
+        self.test_data_predictions_labels_file = test_data_predictions_labels_file
+        self.valid_data_predictions_labels_file = valid_data_predictions_labels_file
         self.batch_size = batch_size
         self.regressor_name = regressor_name
         self.model_file = model_file
@@ -156,7 +154,7 @@ class SelNet(object):
         x_hat = tf.compat.v1.layers.dense(inputs=g3, units=self.original_x_dim,
                                 activation=tf.nn.relu)
 
-        recon_loss = tf.losses.mean_squared_error(predictions=x_hat, labels=x_input)
+        recon_loss = tf.compat.v1.losses.mean_squared_error(predictions=x_hat, labels=x_input)
         recon_loss = tf.reduce_mean(recon_loss)
 
         ae_loss = recon_loss
@@ -274,8 +272,8 @@ class SelNet(object):
         gate = self._construct_rhos(x_fea, x_fea_dr)
 
         # integrate
-        w_t = tf.get_variable(self.regressor_name + 'w_t', [self.tau_part_num + 1, self.unit_len], tf.float32)
-        b_t = tf.get_variable(self.regressor_name + 'b_t', [self.tau_part_num + 1, self.unit_len], tf.float32)
+        w_t = tf.compat.v1.get_variable(self.regressor_name + 'w_t', [self.tau_part_num + 1, self.unit_len], tf.float32)
+        b_t = tf.compat.v1.get_variable(self.regressor_name + 'b_t', [self.tau_part_num + 1, self.unit_len], tf.float32)
         gate = tf.nn.relu(tf.multiply(gate, w_t) + b_t) 
 
         # conv with mask
@@ -302,19 +300,19 @@ class SelNet(object):
     def predict_vae_dnn(self, test_X, test_tau):
         ''' Prediction
         '''
-        #tf.disable_eager_execution()
-        tf.reset_default_graph()
-        x_input = tf.placeholder(dtype=tf.float32, shape=[None, self.original_x_dim], name=self.regressor_name + 'original_X')
+        tf.compat.v1.disable_eager_execution()
+        tf.compat.v1.reset_default_graph()
+        x_input = tf.compat.v1.placeholder(dtype=tf.float32, shape=[None, self.original_x_dim], name=self.regressor_name + 'original_X')
 
 
-        tau_input = tf.placeholder(dtype=tf.float32, shape=[None, self.tau_part_num], name=self.regressor_name + 'tau')
-        self.bn_phase = tf.placeholder(dtype=tf.bool, name=self.regressor_name + 'Phase')
-        self.keep_prob = tf.placeholder(dtype=tf.float32, name=self.regressor_name + 'Dropout')
+        tau_input = tf.compat.v1.placeholder(dtype=tf.float32, shape=[None, self.tau_part_num], name=self.regressor_name + 'tau')
+        self.bn_phase = tf.compat.v1.placeholder(dtype=tf.bool, name=self.regressor_name + 'Phase')
+        self.keep_prob = tf.compat.v1.placeholder(dtype=tf.float32, name=self.regressor_name + 'Dropout')
         # input number
-        self.input_num = tf.placeholder(dtype=tf.int32, name=self.regressor_name + 'input_num')
+        self.input_num = tf.compat.v1.placeholder(dtype=tf.int32, name=self.regressor_name + 'input_num')
         # vae_option
         #tf.reset_default_graph()
-        self.vae_option = tf.placeholder(dtype=tf.int32, name=self.regressor_name + 'vae_option')
+        self.vae_option = tf.compat.v1.placeholder(dtype=tf.int32, name=self.regressor_name + 'vae_option')
 
         _, x_input_dr = self.__ae__(x_input)
         # reconstruct the graph
@@ -323,9 +321,10 @@ class SelNet(object):
 
         # tensorflow saver
         #saver = tf.compat.v1.train.Saver()
-        with tf.Session() as sess:
+        with tf.compat.v1.Session() as sess:
             #saver.restore(sess,self.model_file)
             #saver = tf.train.import_meta_graph('pretrained_models/sel/sel-119.meta')
+            print("current dir:",self.model_file)
             saver = tf.train.import_meta_graph(tf.train.latest_checkpoint(self.model_file)+".meta")
             #saver.restore(sess, tf.train.latest_checkpoint("pretrained_models/sel"))
             saver.restore(sess,tf.train.latest_checkpoint(self.model_file))
