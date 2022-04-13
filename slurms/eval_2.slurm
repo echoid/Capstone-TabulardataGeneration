@@ -6,12 +6,12 @@
 #SBATCH -p deeplearn
 #SBATCH -q gpgpudeeplearn
 #SBATCH --gres=gpu:1
-#SBATCH --job-name=eval_sel
+#SBATCH --job-name=eval_news
 #SBATCH --time=150:00:00
 #SBATCH --mail-user=youran@student.unimelb.edu.au
 #SBATCH --mail-type=ALL
 #SBATCH --mem=60G
-#SBATCH --output=outs/eval_co_other.out
+#SBATCH --output=outs/eval_co_other2.out
 
 
 

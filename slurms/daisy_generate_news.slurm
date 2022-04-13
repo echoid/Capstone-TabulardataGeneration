@@ -24,4 +24,4 @@ module load tqdm/4.41.1
 
 
 
-python generate.py adult False False test
+python generate.py news False False KL
