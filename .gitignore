@@ -146,7 +146,6 @@ dmypy.json
 cython_debug/
 .history/
 *.npy
-*.csv
 pretrained_models/
 pretrained/
 *.out
