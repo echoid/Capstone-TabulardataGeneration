@@ -27,4 +27,4 @@ module load scipy-bundle/2020.11
 # python OCTGAN/main.py --dataset_name=news
 #python OCTGAN/main.py --dataset_name=covertype --epochs=200
 #python OCTGAN/main.py --dataset_name=credit --epochs=200
-python OCTGAN/main.py --dataset_name=ticket --epochs=200
+python OCTGAN/main.py --dataset_name=ticket --epochs=200 --batch_size=20

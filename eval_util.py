@@ -9,22 +9,40 @@ from tqdm import tqdm
 
 
 
-def convert_type(data,columns):
-    data = data[columns].astype('category')
+# def convert_type(data,columns):
+#     data = data[columns].astype('category')
+#     for col in columns:
+#         data[col] = data[col].cat.codes
+#     return data
+
+def convert_type(data,col_list):
+    print("my col_list",col_list)
+    columns = data.columns[col_list]
+    data[columns] = data[columns].astype('category')
+    new_data = data.copy()
     for col in columns:
-        data[col] = data[col].cat.codes
-    return data
+        new_data[col] = data[col].cat.codes
+    return new_data
+
+
+def convert_back(data,converted,col_list):
+    columns = data.columns[col_list]
+    data[columns] = data[columns].astype('category')
+    converted[columns] = converted[columns].astype('category')
+    for col in columns:
+        converted[col] = data[col].cat.categories[converted[col].cat.codes]
+    return converted
 
 
 def make_prediction(response, response_type,training_data, test,dataset):
 
     result = []
 
-    train_data_y = training_data[response].astype("float64")
-    train_data_X = training_data.drop(columns=[response,"label","fnlwgt"]).astype("float64")
+#     train_data_y = training_data[response].astype("float64")
+#     #train_data_X = training_data.drop(columns=[response,"label","fnlwgt"]).astype("float64")
 
-    test_data_X = test.drop(columns=[response,"label","fnlwgt"]).astype("float64")
-    test_data_y = test[response].astype("float64")
+#     #test_data_X = test.drop(columns=[response,"label","fnlwgt"]).astype("float64")
+#     test_data_y = test[response].astype("float64")
 
 
     if response_type == "clf":
@@ -60,11 +78,11 @@ def make_prediction_diff(response, response_type,training_data, test,dataset):
 
     result = []
 
-    train_data_y = training_data[response].astype("float64")
-    train_data_X = training_data.drop(columns=[response,"label","fnlwgt"]).astype("float64")
+#     train_data_y = training_data[response].astype("float64")
+#     #train_data_X = training_data.drop(columns=[response,"label","fnlwgt"]).astype("float64")
 
-    test_data_X = test.drop(columns=[response,"label","fnlwgt"]).astype("float64")
-    test_data_y = test[response].astype("float64")
+#     #test_data_X = test.drop(columns=[response,"label","fnlwgt"]).astype("float64")
+#     test_data_y = test[response].astype("float64")
 
 
     if response_type == "clf":
