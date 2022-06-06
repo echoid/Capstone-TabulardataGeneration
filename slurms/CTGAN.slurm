@@ -5,6 +5,8 @@
 
 #SBATCH -p deeplearn
 #SBATCH -q gpgpudeeplearn
+#SBATCH --ntasks=1
+#SBATCH --cpus-per-task=16
 #SBATCH --gres=gpu:1
 #SBATCH --job-name=ctgan
 #SBATCH --time=150:00:00
@@ -26,9 +28,11 @@ module load tqdm/4.60.0
 module load scipy-bundle/2020.11
 
 
-python CTGAN/ctgan_generate.py adult 300
-python CTGAN/ctgan_generate.py covertype 300
-python CTGAN/ctgan_generate.py credit 300
-python CTGAN/ctgan_generate.py news 300
-# python CTGAN/ctgan_generate.py ticket 300
+python CTGAN/ctgan_generate.py adult 150
+python CTGAN/ctgan_generate.py covertype 150
+python CTGAN/ctgan_generate.py adult 200
+python CTGAN/ctgan_generate.py covertype 200
+# python CTGAN/ctgan_generate.py credit 200
+# python CTGAN/ctgan_generate.py news 200
+# python CTGAN/ctgan_generate.py ticket 200
 

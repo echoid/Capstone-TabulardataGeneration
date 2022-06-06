@@ -11,7 +11,7 @@
 #SBATCH --mail-user=youran@student.unimelb.edu.au
 #SBATCH --mail-type=ALL
 #SBATCH --mem=60G
-#SBATCH --output=outs/eval_co_other2.out
+#SBATCH --output=outs/eval_all.out
 
 
 
@@ -24,8 +24,8 @@ module load tqdm/4.60.0
 module load matplotlib/3.3.3-python-3.8.6
 module load scipy-bundle/2020.11
 
-#python evaluation_sel_2.py adult
-#python evaluation_sel_2.py credit
-#python evaluation_sel_2.py ticket
-python evaluation_sel_2.py covertype
-#python evaluation_sel_2.py news
+python evaluation_sel_3.py adult
+python evaluation_sel_3.py credit
+python evaluation_sel_3.py ticket
+python evaluation_sel_3.py covertype
+python evaluation_sel_3.py news

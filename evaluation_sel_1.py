@@ -29,7 +29,7 @@ origin_data = pd.read_csv("dataset/origin/{}.csv".format(dataname))
 
 
 ctgan = pd.read_csv(generated_datapath + "ctgan/ctgan_less_300.csv").sample(n=1000, random_state=1)
-selgan = pd.read_csv(generated_datapath + "selgan/selgan_300_less_batch.csv").sample(n=1000, random_state=1)
+selgan = pd.read_csv(generated_datapath + "selgan/selgan_300_full_batch.csv").sample(n=1000, random_state=1)
 
 
 

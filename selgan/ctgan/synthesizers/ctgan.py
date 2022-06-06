@@ -350,7 +350,7 @@ class CTGANSynthesizer(BaseSynthesizer):
         
         # back to normal! just for test!
         #steps_per_epoch = max(len(train_data) // self._batch_size, 1)
-        steps_per_epoch = 10
+        steps_per_epoch = 30
         for i in tqdm(range(epochs)):
             for id_ in tqdm(range(steps_per_epoch)):
 
@@ -425,7 +425,7 @@ class CTGANSynthesizer(BaseSynthesizer):
                     cross_entropy = self._cond_loss(fake, c1, m1)
                 
                 if self._selnet:
-                    sel_loss = 0.01 * cal_sel_loss(self._train_data, fakeact.detach().cpu(), self._selnet)
+                    sel_loss = 1 - (1/ 1+ cal_sel_loss(self._train_data, fakeact.detach().cpu(), self._selnet))
 
                 else:
                     sel_loss = 0
@@ -433,7 +433,7 @@ class CTGANSynthesizer(BaseSynthesizer):
                 loss_g = origin_loss + cross_entropy + sel_loss
 
                 if log:
-                    train_log = open(log+"train_log"+".txt","a+")
+                    train_log = open(log+"train_log_modified"+".txt","a+")
                     train_log.write(f"{i+1},{id_},{loss_g.detach().cpu(): .4f},{origin_loss.detach().cpu(): .4f}, {sel_loss: .4f},{cross_entropy: .4f},{loss_d.detach().cpu(): .4f},\n"
                                     )
                     train_log.close()

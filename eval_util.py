@@ -186,12 +186,13 @@ def plot_cdf(data,label,bin=10):
     cdf = np.cumsum(pdf)
     plt.plot(bins_count[1:], cdf, label=label)
 
-def make_compare_plot(datasets,col_name, function, names, title):
+def make_compare_plot(datasets,col_name, function, names, title, dataset, additional=""):
     for i in range(len(datasets)):
         data = datasets[i]
         function(data[col_name],names[i])
     plt.title(title)
     plt.legend()
+    plt.savefig("evaluation_result/{}/{}_{}.png".format(dataset,title,additional))
     plt.show()
 
 

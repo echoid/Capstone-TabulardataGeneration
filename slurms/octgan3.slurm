@@ -9,7 +9,7 @@
 #SBATCH --job-name=octgan_t
 #SBATCH --mail-user=youran@student.unimelb.edu.au
 #SBATCH --mail-type=ALL
-#SBATCH --time=10:00:00
+#SBATCH --time=150:00:00
 #SBATCH --mem=10G
 #SBATCH --output=outs/octgan_t.out
 
@@ -23,8 +23,8 @@ module load tqdm/4.60.0
 module load scipy-bundle/2020.11
 
 
-# python OCTGAN/main.py --dataset_name=adult
-# python OCTGAN/main.py --dataset_name=news
-#python OCTGAN/main.py --dataset_name=covertype --epochs=200
-#python OCTGAN/main.py --dataset_name=credit --epochs=200
-python OCTGAN/main.py --dataset_name=ticket --epochs=200 --batch_size=20
+python OCTGAN/main.py --dataset_name=adult --epochs=100 --batch_size=10
+python OCTGAN/main.py --dataset_name=news --epochs=100 --batch_size=10
+python OCTGAN/main.py --dataset_name=covertype --epochs=100 --batch_size=10
+python OCTGAN/main.py --dataset_name=credit --epochs=100 --batch_size=10
+python OCTGAN/main.py --dataset_name=ticket --epochs=100 --batch_size=10
